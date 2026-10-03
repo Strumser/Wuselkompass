@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="design_doc_mode" content="canvas">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #EFE7DC; }
+    .sr-tag { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 0.2px; }
+    .sr-input { font-family: 'Nunito', sans-serif; }
+    .sr-input::placeholder { color: #A99C8E; }
+    .sr-row:hover { background: #FBF6EF; }
+    .sr-source a { color: #B15A34; }
+    .sr-source a:hover { color: #8F4526; }
+  </style>
+  <template id="__bundler_thumbnail">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#D9663B"></rect><circle cx="50" cy="38" r="14" fill="#F2A73B"></circle><rect x="30" y="60" width="40" height="8" rx="4" fill="#FBF3EA"></rect></svg>
+  </template>
+</helmet>
+
+<div style="max-width:1400px; margin:0 auto; padding:32px 24px 80px; font-family:'Nunito',sans-serif;">
+  <section style="display:flex; gap:32px; flex-wrap:wrap; align-items:flex-start;">
+
+    <div id="1a" data-screen-label="Entdecken" style="width:900px; background:#FFFDFA; border-radius:20px; overflow:hidden; box-shadow:0 20px 50px rgba(60,40,20,0.12);">
+
+      <!-- Header illustration -->
+      <div style="position:relative; background:#F2A73B; height:260px; overflow:hidden;">
+        <svg viewBox="0 0 900 260" width="900" height="260" style="position:absolute; inset:0;">
+          <rect width="900" height="260" fill="#F2A73B"></rect>
+          <!-- hand-drawn wobbly hills, sketchy double-line -->
+          <path d="M-10 200 Q100 150 230 185 Q330 210 450 178 Q560 150 680 190 Q790 220 910 178 L910 260 L-10 260 Z" fill="#8FAE8B"></path>
+          <path d="M-10 200 Q100 150 230 185 Q330 210 450 178 Q560 150 680 190 Q790 220 910 178" fill="none" stroke="#6F9468" stroke-width="2.5" opacity="0.7"></path>
+          <path d="M-10 232 Q120 205 260 228 Q380 248 500 218 Q620 194 910 224 L910 260 L-10 260 Z" fill="#7A9C75"></path>
+          <!-- hand-scribbled bunting line, wobbly rope -->
+          <path d="M0 42 Q300 20 450 42 Q650 28 900 42" fill="none" stroke="#FBF3EA" stroke-width="3" stroke-linecap="round"></path>
+          <circle cx="0" cy="42" r="4" fill="#FBF3EA"></circle>
+          <circle cx="900" cy="42" r="4" fill="#FBF3EA"></circle>
+          <g>
+            <path d="M70 40 L102 38 L83 68 Z" fill="#C2555C"></path>
+            <path d="M70 40 L102 38 L83 68 Z" fill="none" stroke="#A63F3F" stroke-width="1.5" opacity="0.5"></path>
+            <path d="M142 39 L174 38 L155 68 Z" fill="#FBF3EA"></path>
+            <path d="M212 39 L244 39 L225 68 Z" fill="#8FAE8B"></path>
+            <path d="M282 40 L314 39 L295 68 Z" fill="#C2555C"></path>
+            <path d="M352 41 L384 39 L365 68 Z" fill="#FBF3EA"></path>
+            <path d="M422 41 L454 39 L435 68 Z" fill="#8FAE8B"></path>
+            <path d="M492 40 L524 39 L505 68 Z" fill="#C2555C"></path>
+            <path d="M562 39 L594 39 L575 68 Z" fill="#FBF3EA"></path>
+            <path d="M632 39 L664 38 L645 68 Z" fill="#8FAE8B"></path>
+            <path d="M702 38 L734 38 L715 68 Z" fill="#C2555C"></path>
+            <path d="M772 39 L804 39 L785 68 Z" fill="#FBF3EA"></path>
+          </g>
+          <!-- hand-drawn kid figures, sketchy scribble outline style -->
+          <path d="M700 176 Q686 176 690 162 Q694 148 706 150 Q718 152 716 166 Q714 178 700 176 Z" fill="#3A2E28"></path>
+          <path d="M688 190 Q690 210 692 216 Q700 220 710 216 Q712 210 712 190 Q700 184 688 190 Z" fill="#C2555C"></path>
+          <path d="M629 184 Q618 183 622 172 Q626 161 636 163 Q646 165 644 177 Q642 186 629 184 Z" fill="#3A2E28"></path>
+          <path d="M630 196 Q631 212 633 216 Q640 220 648 216 Q650 212 649 196 Q640 191 630 196 Z" fill="#FCDE9F"></path>
+          <!-- sketchy scribble cloud accents -->
+          <path d="M770 55 Q762 44 776 40 Q788 36 794 48 Q800 58 788 64 Q774 70 770 55 Z" fill="#FBF3EA" opacity="0.7"></path>
+          <path d="M800 86 Q794 78 804 76 Q814 74 816 84 Q818 92 808 94 Q798 96 800 86 Z" fill="#FBF3EA" opacity="0.6"></path>
+        </svg>
+        <div style="position: relative; height: 260px; display: flex; flex-direction: column; justify-content: center; padding: 0 40px; width: 733px">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <svg width="52" height="52" viewBox="0 0 76 76" style="width: 54px; height: 41px">
+              <path d="M22 46 Q11 28 36 18 Q59 9 68 32 Q76 53 51 64 Q27 76 14 55 Q10 50 22 46 Z" fill="#FCE2A6" stroke="#F2C77A" stroke-width="2" opacity="0.95"></path>
+              <path d="M40 6 L42 -4 M58 14 L67 6 M70 33 L81 33 M65 54 L73 62 M45 68 L46 78 M22 63 L17 72 M8 44 L-2 46 M14 21 L6 13" stroke="#D9663B" stroke-width="4" stroke-linecap="round"></path>
+            </svg>
+            <span style="font-family:'Baloo 2',sans-serif; font-weight:700; font-size:44px; color:#FFFDFA;">Spielraum</span>
+          </div>
+          <div style="font-family:'Nunito',sans-serif; font-weight:700; font-size:16px; color:#FFF6E8; margin-top:6px;">Kinder- und Familienprogramm für Leipzig und Umgebung</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div style="display:flex; gap:6px; padding:20px 32px 0;">
+        <div style="font-family:'Baloo 2',sans-serif; font-weight:600; font-size:17px; color:#D9663B; padding:8px 4px; border-bottom:3px solid #D9663B;">Entdecken</div>
+        <div style="font-family:'Baloo 2',sans-serif; font-weight:600; font-size:17px; color:#B0A398; padding:8px 4px 8px 20px;">Quellen</div>
+      </div>
+
+      <!-- Filter bar -->
+      <div style="display:flex; gap:10px; flex-wrap:wrap; padding:18px 32px 6px;">
+        <input class="sr-input" placeholder="Suche nach Veranstaltung…" style="flex:2; min-width:180px; border:1px solid #EADFD0; background:#FBF6EF; border-radius:14px; padding:11px 16px; font-size:14px; color:#3A2E28; outline:none;">
+        <select class="sr-input" style="border:1px solid #EADFD0; background:#FBF6EF; border-radius:14px; padding:11px 14px; font-size:14px; color:#3A2E28;"><option>Diese Woche</option></select>
+        <select class="sr-input" style="border:1px solid #EADFD0; background:#FBF6EF; border-radius:14px; padding:11px 14px; font-size:14px; color:#3A2E28;"><option>Ort: Leipzig</option></select>
+        <select class="sr-input" style="border:1px solid #EADFD0; background:#FBF6EF; border-radius:14px; padding:11px 14px; font-size:14px; color:#3A2E28;"><option>Stadtteil</option></select>
+      </div>
+
+      <!-- Event list -->
+      <div style="padding:8px 16px 24px;">
+        <sc-for list="{{ events }}" as="ev" hint-placeholder-count="6">
+          <div class="sr-row" style="display:flex; gap:18px; align-items:center; padding:16px; border-radius:14px;">
+            <div style="width:56px; text-align:center; flex-shrink:0;">
+              <div style="font-size:12px; font-weight:800; color:#B0A398; text-transform:uppercase;">{{ ev.weekday }}</div>
+              <div style="font-family:'Baloo 2',sans-serif; font-size:24px; font-weight:700; color:#3A2E28;">{{ ev.day }}</div>
+              <div style="font-size:11px; font-weight:700; color:#B0A398; text-transform:uppercase;">{{ ev.month }}</div>
+            </div>
+            <div style="flex:1; min-width:0;">
+              <span class="sr-tag" style="background:{{ ev.tagBg }}; color:{{ ev.tagText }};">{{ ev.category }}</span>
+              <div style="font-family:'Baloo 2',sans-serif; font-weight:600; font-size:19px; color:#2E241D; margin-top:5px;">{{ ev.title }}</div>
+              <div style="font-size:13.5px; color:#8A7A6B; margin-top:3px;">{{ ev.meta }}</div>
+            </div>
+            <div class="sr-source" style="flex-shrink:0; font-size:12.5px; color:#B0A398;">
+              Quelle: <a href="#" style="text-decoration:none; font-weight:700;">{{ ev.source }} ↗</a>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const cats = {
+      'Krabbelgruppe': { bg: '#E7EFE3', text: '#5B7A54' },
+      'Theater':       { bg: '#F7E3E1', text: '#A85253' },
+      'Museum':        { bg: '#F5E3D6', text: '#A9633A' },
+      'Vorlesen':      { bg: '#FDEFCB', text: '#9A7A1E' },
+      'Zoo':           { bg: '#DEEAE0', text: '#3E7856' },
+      'Basteln':       { bg: '#F3E1E5', text: '#A14A63' },
+    };
+    const tag = (name) => ({ category: name, tagBg: cats[name].bg, tagText: cats[name].text });
+
+    const events = [
+      { weekday: 'Mo', day: '13', month: 'Jul', title: 'Krabbelgruppe im Familienzentrum West', meta: 'Familienzentrum West · 9:30 Uhr · Plagwitz · kostenlos', source: 'leipzig.de', ...tag('Krabbelgruppe') },
+      { weekday: 'Di', day: '14', month: 'Jul', title: '„Der kleine Bär" – Figurentheater für die Kleinsten', meta: 'Theater der Jungen Welt · 16:00 Uhr · Zentrum', source: 'tdjw.de', ...tag('Theater') },
+      { weekday: 'Mi', day: '15', month: 'Jul', title: 'Mitmach-Führung: Tiere im Zoo Leipzig', meta: 'Zoo Leipzig · 10:00 Uhr · Gohlis', source: 'zoo-leipzig.de', ...tag('Zoo') },
+      { weekday: 'Do', day: '16', month: 'Jul', title: 'Vorlesestunde „Kleine Raupe Nimmersatt"', meta: 'Stadtbibliothek Grünau · 15:30 Uhr · Grünau · kostenlos', source: 'stadtbibliothek-leipzig.de', ...tag('Vorlesen') },
+      { weekday: 'Fr', day: '17', month: 'Jul', title: 'Bastelnachmittag: Sommerdrachen basteln', meta: 'Familientreff Connewitz · 14:00 Uhr · Connewitz', source: 'familientreff-connewitz.de', ...tag('Basteln') },
+      { weekday: 'Sa', day: '18', month: 'Jul', title: 'Kindermuseum: Entdeckertag für 0–6 Jahre', meta: 'Kindermuseum Leipzig · 11:00 Uhr · Zentrum-Nord', source: 'kindermuseum-leipzig.de', ...tag('Museum') },
+    ];
+    return { events };
+  }
+}
+
+</script>
+</body>
+</html>

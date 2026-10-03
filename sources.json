@@ -1,0 +1,737 @@
+{
+  "sources": [
+    {
+      "id": "meinestadt-leipzig",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://veranstaltungen.meinestadt.de/leipzig/kinderveranstaltungen/alle",
+      "note": "Backbone-Aggregator",
+      "family_default": 0.5,
+      "city": "Leipzig"
+    },
+    {
+      "id": "meinestadt-halle",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://veranstaltungen.meinestadt.de/halle-saale/kinderveranstaltungen/alle",
+      "note": "Umland Halle",
+      "family_default": 0.5,
+      "city": "Halle (Saale)"
+    },
+    {
+      "id": "meinestadt-grimma",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://veranstaltungen.meinestadt.de/grimma/kinderveranstaltungen/alle",
+      "note": "Umland",
+      "family_default": 0.5,
+      "city": "Grimma"
+    },
+    {
+      "id": "meinestadt-borna",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://veranstaltungen.meinestadt.de/borna/kinderveranstaltungen/alle",
+      "note": "Umland",
+      "family_default": 0.5,
+      "city": "Borna"
+    },
+    {
+      "id": "meinestadt-wurzen",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://veranstaltungen.meinestadt.de/wurzen/kinderveranstaltungen/alle",
+      "note": "Umland",
+      "family_default": 0.5,
+      "city": "Wurzen"
+    },
+    {
+      "id": "meinestadt-delitzsch",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://veranstaltungen.meinestadt.de/delitzsch/kinderveranstaltungen/alle",
+      "note": "Umland",
+      "family_default": 0.5,
+      "city": "Delitzsch"
+    },
+    {
+      "id": "meinestadt-torgau",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://veranstaltungen.meinestadt.de/torgau/kinderveranstaltungen/alle",
+      "note": "Umland",
+      "family_default": 0.5,
+      "city": "Torgau"
+    },
+    {
+      "id": "meinestadt-merseburg",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://veranstaltungen.meinestadt.de/merseburg/kinderveranstaltungen/alle",
+      "note": "Umland",
+      "family_default": 0.5,
+      "city": "Merseburg"
+    },
+    {
+      "id": "meinestadt-naumburg",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://veranstaltungen.meinestadt.de/naumburg-saale/kinderveranstaltungen/alle",
+      "note": "Umland",
+      "family_default": 0.5,
+      "city": "Naumburg"
+    },
+    {
+      "id": "meinestadt-altenburg",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://veranstaltungen.meinestadt.de/altenburg/kinderveranstaltungen/alle",
+      "note": "Umland",
+      "family_default": 0.5,
+      "city": "Altenburg"
+    },
+    {
+      "id": "meinestadt-eilenburg",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://veranstaltungen.meinestadt.de/eilenburg/kinderveranstaltungen/alle",
+      "note": "Umland",
+      "family_default": 0.5,
+      "city": "Eilenburg"
+    },
+    {
+      "id": "meinestadt-markkleeberg",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://veranstaltungen.meinestadt.de/markkleeberg/kinderveranstaltungen/alle",
+      "note": "Umland",
+      "family_default": 0.5,
+      "city": "Markkleeberg"
+    },
+    {
+      "id": "eventfinder-delitzsch",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://www.eventfinder.de/delitzsch/veranstaltungen/",
+      "note": "2. Regio-Aggregator",
+      "city": "Delitzsch",
+      "scope": "general"
+    },
+    {
+      "id": "eventfinder-grimma",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://www.eventfinder.de/grimma/veranstaltungen/",
+      "note": "Aggregator",
+      "city": "Grimma",
+      "scope": "general"
+    },
+    {
+      "id": "eventfinder-borna",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://www.eventfinder.de/borna/veranstaltungen/",
+      "note": "Aggregator",
+      "city": "Borna",
+      "scope": "general"
+    },
+    {
+      "id": "eventfinder-wurzen",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://www.eventfinder.de/wurzen/veranstaltungen/",
+      "note": "Aggregator",
+      "city": "Wurzen",
+      "scope": "general"
+    },
+    {
+      "id": "eventfinder-naumburg",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://www.eventfinder.de/naumburg/veranstaltungen/",
+      "note": "Aggregator",
+      "city": "Naumburg",
+      "scope": "general"
+    },
+    {
+      "id": "eventfinder-altenburg",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://www.eventfinder.de/altenburg/veranstaltungen/",
+      "note": "Aggregator",
+      "city": "Altenburg",
+      "scope": "general"
+    },
+    {
+      "id": "theater-junge-welt",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://www.theaterderjungenweltleipzig.de/wann-und-was/spielplan/",
+      "note": "Kinder-/Jugendtheater",
+      "family_default": 0.55,
+      "city": "Leipzig"
+    },
+    {
+      "id": "tourismus-wurzen",
+      "type": "jsonld",
+      "active": true,
+      "url": "https://www.tourismus-wurzen.de/veranstaltungen/alle-veranstaltungen-wurzen-region-finden/",
+      "note": "JSON-LD bestätigt (7)",
+      "city": "Wurzen",
+      "scope": "general"
+    },
+    {
+      "id": "muetterzentrum-fiz",
+      "type": "wp_api",
+      "active": true,
+      "base": "https://www.muetterzentrum-leipzig.de",
+      "note": "FiZ-Netz, 0-6 Krabbelgruppen",
+      "family_default": 0.7,
+      "city": "Leipzig"
+    },
+    {
+      "id": "lipzkidz",
+      "type": "wp_api",
+      "active": true,
+      "base": "https://lipzkidz.family",
+      "note": "Familien-Blog",
+      "family_default": 0.55,
+      "city": "Leipzig"
+    },
+    {
+      "id": "grimma-stadt",
+      "type": "auto",
+      "active": true,
+      "url": "https://www.grimma.de/portal/seiten/veranstaltungen-900000302-27290.html",
+      "note": "Kommunal-CMS Sachsen",
+      "city": "Grimma",
+      "scope": "general"
+    },
+    {
+      "id": "delitzsch-stadt",
+      "type": "auto",
+      "active": true,
+      "url": "https://www.delitzsch.de/entdecken/veranstaltungen/",
+      "note": "Kommunal-CMS Sachsen",
+      "city": "Delitzsch",
+      "scope": "general"
+    },
+    {
+      "id": "markkleeberg-stadt",
+      "type": "auto",
+      "active": true,
+      "url": "https://www.markkleeberg.de/freizeit-und-tourismus/veranstaltungen/veranstaltungskalender/",
+      "note": "TYPO3",
+      "city": "Markkleeberg",
+      "scope": "general"
+    },
+    {
+      "id": "borna-stadt",
+      "type": "auto",
+      "active": false,
+      "url": "https://www.borna.de/Freizeit-Kultur-und-Tourismus/Veranstaltungskalender.htm/Veranstaltungen",
+      "note": "TODO: kein Feed/JSON-LD gefunden -> LLM-Fallback nötig",
+      "city": "Borna"
+    },
+    {
+      "id": "kultur-wurzen",
+      "type": "auto",
+      "active": true,
+      "url": "https://www.kultur-wurzen.de/portal/aseiten/veranstaltungen-10001-22901.html",
+      "note": "Umland Wurzen",
+      "city": "Wurzen",
+      "scope": "general"
+    },
+    {
+      "id": "leipzig-leben",
+      "type": "rss",
+      "active": true,
+      "url": "https://www.leipzig-leben.de/veranstaltungen/freizeit-ideen/kinder-familien/feed/",
+      "note": "Kinder & Familien Kategorie-RSS-Feed",
+      "family_default": 0.6,
+      "city": "Leipzig"
+    },
+    {
+      "id": "leipzig-leben-tanz-theater",
+      "type": "rss",
+      "active": true,
+      "url": "https://www.leipzig-leben.de/veranstaltungen/kultur/tanz-theater-performance/feed/",
+      "note": "Freigegebene Kategorie kultur/tanz-theater-performance, Familienfilter gelockert",
+      "family_default": 0.4,
+      "city": "Leipzig"
+    },
+    {
+      "id": "leipzig-leben-festivals",
+      "type": "rss",
+      "active": true,
+      "url": "https://www.leipzig-leben.de/veranstaltungen/kultur/festivals/feed/",
+      "note": "Freigegebene Kategorie kultur/festivals, Familienfilter gelockert",
+      "family_default": 0.4,
+      "city": "Leipzig"
+    },
+    {
+      "id": "leipzig-leben-kunst-ausstellungen",
+      "type": "rss",
+      "active": true,
+      "url": "https://www.leipzig-leben.de/veranstaltungen/kultur/kunst-ausstellungen/feed/",
+      "note": "Freigegebene Kategorie kultur/kunst-ausstellungen, Familienfilter gelockert",
+      "family_default": 0.4,
+      "city": "Leipzig"
+    },
+    {
+      "id": "leipzig-leben-gaming-adventure",
+      "type": "rss",
+      "active": true,
+      "url": "https://www.leipzig-leben.de/veranstaltungen/freizeit-ideen/gaming-adventure/feed/",
+      "note": "Freigegebene Kategorie freizeit-ideen/gaming-adventure, Familienfilter gelockert",
+      "family_default": 0.4,
+      "city": "Leipzig"
+    },
+    {
+      "id": "mamalismus",
+      "type": "auto",
+      "active": true,
+      "url": "https://mamalismus.de/",
+      "note": "Leipziger Mamablog",
+      "family_default": 0.4,
+      "city": "Leipzig"
+    },
+    {
+      "id": "kinder-kalender",
+      "type": "auto",
+      "active": false,
+      "url": "https://www.kinder-kalender.de/kinderkalender-leipzig-buehne.html",
+      "note": "TODO: Feed-URL ermitteln",
+      "city": "Leipzig"
+    },
+    {
+      "id": "leipzig-fuer-lau",
+      "type": "auto",
+      "active": true,
+      "url": "https://leipzig-fuer-lau.de/veranstaltungen-bibliotheken/",
+      "note": "kostenlose Angebote",
+      "family_default": 0.4,
+      "city": "Leipzig"
+    },
+    {
+      "id": "tiergarten-delitzsch",
+      "type": "auto",
+      "active": true,
+      "url": "https://tiergarten-delitzsch.com/veranstaltungen/",
+      "note": "WP",
+      "family_default": 0.45,
+      "city": "Delitzsch"
+    },
+    {
+      "id": "leipziger-kinderfestival",
+      "type": "auto",
+      "active": true,
+      "url": "https://www.leipziger-kinderfestival.de/",
+      "note": "WP",
+      "family_default": 0.7,
+      "city": "Leipzig"
+    },
+    {
+      "id": "lichtblick-familien",
+      "type": "auto",
+      "active": true,
+      "url": "https://lichtblick-fuer-familien.de/fabimobil/veranstaltungen/",
+      "note": "Familienzentrum MKL/Borna",
+      "family_default": 0.7,
+      "city": "Markkleeberg"
+    },
+    {
+      "id": "kribbelbunt-leipzig",
+      "type": "auto",
+      "active": false,
+      "url": "https://www.kribbelbunt.de/leipzig/",
+      "note": "TODO: JS-gerendert -> Playwright nötig",
+      "city": "Leipzig"
+    },
+    {
+      "id": "kindundkegel",
+      "type": "rss",
+      "active": false,
+      "url": "https://www.kindundkegel.de/",
+      "note": "TODO Phase 4: korrekten Event-Feed ermitteln",
+      "city": "Leipzig"
+    },
+    {
+      "id": "leipzig-de",
+      "type": "html",
+      "parser": "leipzig_de",
+      "active": true,
+      "url": "https://www.leipzig.de/leben-in-leipzig/kinder-und-familie/freizeitangebote-fuer-kinder-und-jugendliche/veranstaltungen",
+      "family_default": 0.5,
+      "note": "Offizieller Stadt-Kalender (TYPO3 Calendarize), HTML-Parser",
+      "city": "Leipzig"
+    },
+    {
+      "id": "leipzig-im",
+      "type": "html",
+      "parser": "leipzig_im",
+      "active": true,
+      "url": "https://www.leipzig-im.de/index.php?section=anzeigensort&sort=rubrik&auswahl=Kinder+%26+Familie",
+      "family_default": 0.5,
+      "note": "Rubrik Kinder & Familie, HTML-Parser",
+      "city": "Leipzig"
+    },
+    {
+      "id": "leipzig-im-fuehrung",
+      "type": "html",
+      "parser": "leipzig_im",
+      "active": true,
+      "url": "https://www.leipzig-im.de/index.php?section=anzeigensort&sort=rubrik&auswahl=F%C3%BChrung",
+      "family_default": 0.4,
+      "note": "Freigegebene Rubrik Führung, Familienfilter gelockert",
+      "city": "Leipzig"
+    },
+    {
+      "id": "leipzig-im-fest-festival",
+      "type": "html",
+      "parser": "leipzig_im",
+      "active": true,
+      "url": "https://www.leipzig-im.de/index.php?section=anzeigensort&sort=rubrik&auswahl=Fest+%26+Festival",
+      "family_default": 0.4,
+      "note": "Freigegebene Rubrik Fest & Festival, Familienfilter gelockert",
+      "city": "Leipzig"
+    },
+    {
+      "id": "leipzig-im-umland",
+      "type": "html",
+      "parser": "leipzig_im",
+      "active": true,
+      "url": "https://www.leipzig-im.de/index.php?section=anzeigensort&sort=rubrik&auswahl=Umland",
+      "family_default": 0.4,
+      "note": "Freigegebene Rubrik Umland, Familienfilter gelockert"
+    },
+    {
+      "id": "rausgegangen",
+      "type": "listing_jsonld",
+      "active": true,
+      "url": "https://rausgegangen.de/leipzig/kategorie/kinder-und-familien/",
+      "base": "https://rausgegangen.de",
+      "link_re": "(/events/[a-z0-9-]+/)",
+      "limit": 40,
+      "family_default": 0.5,
+      "note": "Kinder-&-Familien-Kategorie: Listing -> Detailseiten-JSON-LD",
+      "city": "Leipzig"
+    },
+    {
+      "id": "rausgegangen-aktiv-kreativ",
+      "type": "listing_jsonld",
+      "active": true,
+      "url": "https://rausgegangen.de/leipzig/kategorie/aktiv-und-kreativ/",
+      "base": "https://rausgegangen.de",
+      "link_re": "(/events/[a-z0-9-]+/)",
+      "limit": 40,
+      "family_default": 0.4,
+      "note": "Freigegebene Kategorie aktiv-und-kreativ, Familienfilter gelockert",
+      "city": "Leipzig"
+    },
+    {
+      "id": "rausgegangen-theater",
+      "type": "listing_jsonld",
+      "active": true,
+      "url": "https://rausgegangen.de/leipzig/kategorie/theater/",
+      "base": "https://rausgegangen.de",
+      "link_re": "(/events/[a-z0-9-]+/)",
+      "limit": 40,
+      "family_default": 0.4,
+      "note": "Freigegebene Kategorie theater, Familienfilter gelockert",
+      "city": "Leipzig"
+    },
+    {
+      "id": "rausgegangen-feste-festival",
+      "type": "listing_jsonld",
+      "active": true,
+      "url": "https://rausgegangen.de/leipzig/kategorie/feste-und-festival/",
+      "base": "https://rausgegangen.de",
+      "link_re": "(/events/[a-z0-9-]+/)",
+      "limit": 40,
+      "family_default": 0.4,
+      "note": "Freigegebene Kategorie feste-und-festival, Familienfilter gelockert",
+      "city": "Leipzig"
+    },
+    {
+      "id": "rausgegangen-ausstellung",
+      "type": "listing_jsonld",
+      "active": true,
+      "url": "https://rausgegangen.de/leipzig/kategorie/ausstellung/",
+      "base": "https://rausgegangen.de",
+      "link_re": "(/events/[a-z0-9-]+/)",
+      "limit": 40,
+      "family_default": 0.4,
+      "note": "Freigegebene Kategorie ausstellung, Familienfilter gelockert",
+      "city": "Leipzig"
+    },
+    {
+      "id": "rausgegangen-markt",
+      "type": "listing_jsonld",
+      "active": true,
+      "url": "https://rausgegangen.de/leipzig/kategorie/markt/",
+      "base": "https://rausgegangen.de",
+      "link_re": "(/events/[a-z0-9-]+/)",
+      "limit": 40,
+      "family_default": 0.4,
+      "note": "Freigegebene Kategorie markt, Familienfilter gelockert",
+      "city": "Leipzig"
+    },
+    {
+      "id": "rausgegangen-shows-performances",
+      "type": "listing_jsonld",
+      "active": true,
+      "url": "https://rausgegangen.de/leipzig/kategorie/shows-und-performances/",
+      "base": "https://rausgegangen.de",
+      "link_re": "(/events/[a-z0-9-]+/)",
+      "limit": 40,
+      "family_default": 0.4,
+      "note": "Freigegebene Kategorie shows-und-performances, Familienfilter gelockert",
+      "city": "Leipzig"
+    },
+    {
+      "id": "kreuzer",
+      "type": "kreuzer",
+      "active": true,
+      "url": "https://kreuzer-leipzig.de/termine/kinder-familie",
+      "ressort": "kinder-familie",
+      "family_default": 0.5,
+      "city": "Leipzig",
+      "note": "Stadtmagazin, /termine/filter JSON (Ressort kinder-familie)",
+      "ua": "browser"
+    },
+    {
+      "id": "kreuzer-theater",
+      "type": "kreuzer",
+      "active": true,
+      "url": "https://kreuzer-leipzig.de/termine/theater",
+      "ressort": "theater",
+      "family_default": 0.4,
+      "city": "Leipzig",
+      "note": "Freigegebene Kategorie (Ressort theater), Familienfilter gelockert",
+      "ua": "browser"
+    },
+    {
+      "id": "kreuzer-literatur",
+      "type": "kreuzer",
+      "active": true,
+      "url": "https://kreuzer-leipzig.de/termine/literatur",
+      "ressort": "literatur",
+      "family_default": 0.4,
+      "city": "Leipzig",
+      "note": "Freigegebene Kategorie (Ressort literatur), Familienfilter gelockert",
+      "ua": "browser"
+    },
+    {
+      "id": "kreuzer-umland",
+      "type": "kreuzer",
+      "active": true,
+      "url": "https://kreuzer-leipzig.de/termine/umland",
+      "ressort": "umland",
+      "family_default": 0.4,
+      "note": "Freigegebene Kategorie (Ressort umland), Familienfilter gelockert",
+      "ua": "browser"
+    },
+    {
+      "id": "lvz",
+      "type": "html",
+      "parser": "lvz",
+      "active": false,
+      "url": "https://www.lvz.de/",
+      "note": "TODO: Paywall/JS - später prüfen",
+      "city": "Leipzig"
+    },
+    {
+      "id": "mz",
+      "type": "html",
+      "parser": "mz",
+      "active": false,
+      "url": "https://www.mz.de/",
+      "note": "TODO: Paywall/JS - später prüfen",
+      "city": "Leipzig"
+    },
+    {
+      "id": "urbanite",
+      "type": "html",
+      "parser": "urbanite",
+      "active": true,
+      "pages": 6,
+      "url": "https://www.urbanite.net/leipzig/events/kategorie/kinder-familie/",
+      "family_default": 0.5,
+      "city": "Leipzig",
+      "note": "Stadtmagazin, Kinder-Familie-Kategorie (Browser-UA)",
+      "ua": "browser"
+    },
+    {
+      "id": "ahoi-leipzig",
+      "type": "listing_jsonld",
+      "active": true,
+      "url": "https://ahoi-leipzig.de/veranstaltungen-leipzig/",
+      "base": "https://ahoi-leipzig.de",
+      "link_re": "(/veranstaltung/termin/[a-z0-9-]+/)",
+      "limit": 40,
+      "family_default": 0.15,
+      "city": "Leipzig",
+      "note": "Stadtmagazin-Kalender, Detail-JSON-LD; Klassifikator filtert",
+      "ua": "browser",
+      "scope": "general"
+    },
+    {
+      "id": "leipziginfo",
+      "type": "leipziginfo",
+      "active": true,
+      "ua": "browser",
+      "url": "https://www.leipziginfo.de/veranstaltungen/",
+      "family_default": 0.15,
+      "city": "Leipzig",
+      "note": "TYPO3-Kalender, Listing->Detail-Microdata; allgemein, Klassifikator filtert",
+      "scope": "general"
+    },
+    {
+      "id": "l-iz",
+      "type": "auto",
+      "active": false,
+      "ua": "browser",
+      "url": "https://www.l-iz.de/veranstaltungen/tipp-familie",
+      "note": "TODO: redaktionell; Feed ohne Event-Datum -> LLM/Detail-Analyse nötig",
+      "city": "Leipzig"
+    }
+  ],
+  "venues_seed": [
+    {
+      "id": "zoo-leipzig",
+      "name": "Zoo Leipzig",
+      "kind": "zoo",
+      "url": "https://www.zoo-leipzig.de/",
+      "address": "Leipzig",
+      "age_hint": "alle",
+      "note": "Top-Ziel Kleinkinder"
+    },
+    {
+      "id": "wildpark-leipzig",
+      "name": "Wildpark Leipzig",
+      "kind": "zoo",
+      "url": "https://www.leipzig.de/",
+      "address": "Leipzig",
+      "age_hint": "0+",
+      "note": "Eintritt frei, buggyfreundlich"
+    },
+    {
+      "id": "kawi-kids",
+      "name": "Kawi Kids",
+      "kind": "indoor",
+      "url": "https://www.kawi-kids.de/",
+      "address": "Leipzig",
+      "age_hint": "0-5",
+      "note": "Babys/Kleinkinder, Eltern-Kind-Turnen"
+    },
+    {
+      "id": "hummelbienchen",
+      "name": "Hummelbienchen Kinderwelt",
+      "kind": "indoor",
+      "url": "https://hummelbienchen.de/",
+      "address": "Leipzig",
+      "age_hint": "9M-4J",
+      "note": "freies Spiel, Naturmaterialien"
+    },
+    {
+      "id": "kitupiland",
+      "name": "Kitupiland",
+      "kind": "indoor",
+      "url": "https://kitupiland.de/",
+      "address": "Leipzig",
+      "age_hint": "1-7",
+      "note": "Eltern-Kind-Sport"
+    },
+    {
+      "id": "unikatum",
+      "name": "UNIKATUM Kindermuseum",
+      "kind": "museum",
+      "url": "https://www.kindermuseum-unikatum.de/",
+      "address": "Leipzig",
+      "age_hint": "3+",
+      "note": "Mitmach-Ausstellungen"
+    },
+    {
+      "id": "tiergarten-delitzsch-v",
+      "name": "Tiergarten Delitzsch",
+      "kind": "zoo",
+      "url": "https://tiergarten-delitzsch.com/",
+      "address": "Delitzsch",
+      "age_hint": "alle",
+      "note": "Streichelgehege"
+    },
+    {
+      "id": "puppentheater-sterntaler",
+      "name": "Puppentheater Sterntaler",
+      "kind": "theater",
+      "url": "https://www.puppentheater-sterntaler.de/",
+      "address": "Leipzig",
+      "age_hint": "3+",
+      "note": ""
+    },
+    {
+      "id": "belantis",
+      "name": "Belantis",
+      "kind": "freizeitpark",
+      "url": "https://www.belantis.de/",
+      "address": "Leipzig",
+      "age_hint": "alle",
+      "note": "Freizeitpark bei Leipzig"
+    },
+    {
+      "id": "erlebnisbauernhof-kitzen",
+      "name": "Gläserner Kuhstall Kitzen",
+      "kind": "bauernhof",
+      "url": "https://www.agrarprodukte-kitzen.de/erlebnisbauernhof",
+      "address": "Kitzen",
+      "age_hint": "alle",
+      "note": ""
+    },
+    {
+      "id": "monkeytown",
+      "name": "Monkey Town Leipzig",
+      "kind": "indoor",
+      "url": "https://monkeytown.eu/de/leipzig/home",
+      "address": "Großpösna",
+      "age_hint": "4+ (Kleinkindbereich)",
+      "note": ""
+    },
+    {
+      "id": "jumphouse",
+      "name": "Jump House Leipzig",
+      "kind": "indoor",
+      "url": "https://www.jumphouse.de/leipzig/",
+      "address": "Leipzig",
+      "age_hint": "2-6 Minijump",
+      "note": "Trampolin"
+    },
+    {
+      "id": "inselzoo-altenburg",
+      "name": "Inselzoo Altenburg",
+      "kind": "zoo",
+      "url": "https://www.inselzoo.de/",
+      "address": "Altenburg",
+      "age_hint": "alle",
+      "note": "einziger Inselzoo Deutschlands"
+    },
+    {
+      "id": "tierpark-luetzen",
+      "name": "Tier- & Erlebnispark Lützen",
+      "kind": "zoo",
+      "url": "https://www.tierpark-luetzen.de/",
+      "address": "Lützen",
+      "age_hint": "alle",
+      "note": "Barfußpfad, Kletterwald"
+    },
+    {
+      "id": "stadtlandtour",
+      "name": "StadtLandTour: Leipzig mit Kindern",
+      "kind": "inspiration",
+      "url": "https://www.stadtlandtour.de/reisen-orte/leipzig-mit-kindern",
+      "address": "Leipzig",
+      "age_hint": "alle",
+      "note": "Ausflugsblog (kein Kalender)"
+    }
+  ]
+}

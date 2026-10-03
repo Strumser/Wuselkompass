@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+
+# Wird beim Crawlen neu erzeugt
+data/cache/
+data/events.db
+data/events.db-journal
+data/status.json
+data/export/
+
+# Alte Design-Vorlage als Archiv
+*.zip
+
+# Python
+__pycache__/
+*.pyc
