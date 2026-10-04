@@ -49,6 +49,9 @@ GAZETTEER = {
     "kitzen": (51.2350, 12.2100),
     "kreuma": (51.5000, 12.4000),
     "dornreichenbach": (51.4100, 12.8600),
+    "freyburg": (51.2220, 11.7780),
+    "weißenfels": (51.2000, 11.9680),
+    "markranstädt": (51.2960, 12.2230),
 }
 
 
@@ -59,6 +62,8 @@ DISPLAY = {
     "bad lausick": "Bad Lausick", "bitterfeld": "Bitterfeld-Wolfen",
     "bitterfeld-wolfen": "Bitterfeld-Wolfen", "großpösna": "Großpösna",
     "grossösna": "Großpösna", "lützen": "Lützen",
+    "freyburg": "Freyburg (Unstrut)", "weißenfels": "Weißenfels",
+    "markranstädt": "Markranstädt",
 }
 
 # Wichtige Leipziger Stadtteile (für den Sub-Filter)
@@ -126,3 +131,12 @@ def distance_from_leipzig(coord: tuple[float, float] | None) -> float | None:
     if not coord:
         return None
     return round(haversine(LEIPZIG, coord), 1)
+
+
+def is_known_place(name: str | None) -> bool:
+    """True, wenn der reine Ortsname (z. B. "Naumburg (Saale)", "Halle") im Gazetteer steht.
+    Exakter Namensvergleich – kein Teilstring (sonst trifft "Reithalle" auf "Halle")."""
+    if not name:
+        return False
+    n = name.lower().split("(")[0].strip()
+    return n in GAZETTEER or name.lower().strip() in GAZETTEER

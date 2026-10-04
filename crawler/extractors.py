@@ -276,6 +276,110 @@ def kreuzer_api(source_id: str, ressort: str = "kinder-familie", ua=None,
     return out
 
 
+# ------------------------------------------------------ urbanite (Tagesseiten)
+def urbanite_days(source_id: str, categories: list[str], ua=None, days: int = 21,
+                  nur_bekannte_orte: bool = True) -> list[dict]:
+    """urbanite.net: je Tag /leipzig/events/<datum>/ holen und nach Rubrik filtern.
+    Mit nur_bekannte_orte werden Termine verworfen, deren Ort (Teil vor dem Komma der
+    Adresse) nicht im Regions-Gazetteer steht (urbanite listet auch Coburg, Frankfurt/Oder …)."""
+    from datetime import date, timedelta
+    from . import adapters_html, geo
+    seen, out = set(), []
+    for i in range(days):
+        day = (date.today() + timedelta(days=i)).isoformat()
+        page = fetch.get(f"https://www.urbanite.net/leipzig/events/{day}/",
+                         max_age=3 * 3600, ua=ua)
+        if not page:
+            continue
+        for ev in adapters_html.parse_urbanite_day(page, source_id, categories):
+            if nur_bekannte_orte and not geo.is_known_place((ev["address"] or "").split(",")[0]):
+                continue
+            key = (ev["source_url"], ev["start_at"])
+            if key not in seen:
+                seen.add(key)
+                out.append(ev)
+    return out
+
+
+
+# ---------------------------------------------- Theater der Jungen Welt (Monatsseiten)
+def tdjw_events(source_id: str, months: int = 6, ua=None) -> list[dict]:
+    """Spielplan je Monat (/spielplan/spielplan/suche/ab-…/bis-…), jeweils alle Seiten
+    (…/seite-N, "1 von M")."""
+    import calendar
+    from datetime import date
+    from . import adapters_html
+    base = "https://www.theaterderjungenweltleipzig.de/spielplan/spielplan/suche"
+    today = date.today()
+    seen, out = set(), []
+    for k in range(months):
+        y, m = divmod(today.year * 12 + today.month - 1 + k, 12)
+        y, m = y, m + 1
+        last = calendar.monthrange(y, m)[1]
+        url = f"{base}/ab-{y}-{m:02d}-01/bis-{y}-{m:02d}-{last}"
+        first = fetch.get(url, max_age=6 * 3600, ua=ua)
+        if not first:
+            continue
+        pm = re.search(r"von\s*(\d+)\s*</span>", first)
+        pages = int(pm.group(1)) if pm else 1
+        for n in range(1, pages + 1):
+            page = first if n == 1 else fetch.get(f"{url}/seite-{n}", max_age=6 * 3600, ua=ua)
+            for ev in adapters_html.parse_tdjw(page or "", source_id):
+                key = (ev["source_url"], ev["start_at"])
+                if key not in seen:
+                    seen.add(key)
+                    out.append(ev)
+    return out
+
+
+# ------------------------------------- WordPress-Seite mit Terminliste (<li>-Einträge)
+_MONTHS_DE = {"januar": 1, "februar": 2, "märz": 3, "april": 4, "mai": 5, "juni": 6,
+              "juli": 7, "august": 8, "september": 9, "oktober": 10, "november": 11,
+              "dezember": 12}
+
+
+def wp_page_list(source_id: str, api_url: str, page_url: str, venue: str,
+                 address: str) -> list[dict]:
+    """Eine WordPress-Seite (über /wp-json/wp/v2/pages/<id>), deren Inhalt eine <li>-Liste
+    der Form "31. Januar 2026, 10:00 bis 17:00 Uhr: Titel." ist (z. B. Tiergarten Delitzsch).
+    Einträge ohne konkretes Datum (z. B. "verschiedene Termine") werden übersprungen."""
+    text = fetch.get(api_url, max_age=3 * 3600)
+    if not text:
+        return []
+    try:
+        content = json.loads(text)["content"]["rendered"]
+    except (json.JSONDecodeError, KeyError, TypeError):
+        return []
+    out = []
+    for li in re.findall(r"<li>(.*?)</li>", content, re.S):
+        plain = html.unescape(re.sub(r"<[^>]+>", "", li)).strip()
+        m = re.match(r"(\d{1,2})\.(?:\s*/\s*(\d{1,2})\.)?\s*(" + "|".join(_MONTHS_DE) +
+                     r")\s+(\d{4})\s*[,:]?\s*(.*)$", plain, re.I | re.S)
+        if not m:
+            continue
+        d1, d2, mon, year, rest = m.groups()
+        y, mo = int(year), _MONTHS_DE[mon.lower()]
+        tm = re.search(r"(\d{1,2})(?::(\d{2}))?\s*bis\s*(\d{1,2})(?::(\d{2}))?\s*Uhr", rest)
+        hh, mm = (int(tm.group(1)), int(tm.group(2) or 0)) if tm else (0, 0)
+        start = f"{y:04d}-{mo:02d}-{int(d1):02d}T{hh:02d}:{mm:02d}:00"
+        end = None
+        if tm:
+            end = f"{y:04d}-{mo:02d}-{int(d2 or d1):02d}T{int(tm.group(3)):02d}:{int(tm.group(4) or 0):02d}:00"
+        elif d2:
+            end = f"{y:04d}-{mo:02d}-{int(d2):02d}T00:00:00"
+        # Titel: Text nach "Uhr:" bzw. nach dem Datum, ohne führendes ":" und Schlusspunkt
+        title = re.sub(r"^.*?Uhr\s*[:,]?\s*", "", rest, count=1) if tm else rest
+        title = title.strip(" :.,")
+        href = re.search(r'href="([^"]+)"', li)
+        if title:
+            out.append({
+                "source_id": source_id, "source_url": href.group(1) if href else page_url,
+                "title": title, "summary": None, "start_at": start, "end_at": end,
+                "venue_name": venue, "address": address, "price": None,
+            })
+    return out
+
+
 # --------------------------------------------- generisch: Listing -> Detail-JSON-LD
 def listing_detail_jsonld(source_id: str, listing_url: str, link_re: str,
                           base: str, limit: int = 40, ua=None) -> list[dict]:

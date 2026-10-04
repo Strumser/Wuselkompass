@@ -5,7 +5,9 @@ aggregiert. Stdlib-only Python (kein pip nötig). Datenbank: `data/events.db` (S
 
 ## Starten / Bedienen (macOS, ohne Terminal)
 Doppelklick im Projektordner: **Start.command** (Server + Browser), **Aktualisieren.command**
-(Crawl), **Ende.command** (stoppt), **Export.command** (CSVs erzeugen + Ordner öffnen).
+(Crawl), **Ende.command** (stoppt + sichert auf GitHub), **Sichern.command** (nur sichern,
+App läuft weiter), **Export.command** (CSVs erzeugen + Ordner öffnen). Start.command holt
+vorher den neuesten Stand von GitHub (Repo: Strumser/Wuselkompass, privat).
 Manuell: `python3 -m webapp.serve` / `python3 -m crawler.run` / `python3 -m tools.report`.
 App: http://localhost:8000
 
@@ -29,12 +31,52 @@ Letzter Crawl 03.10.2026 22:20: 1541 Events in DB, Crawl dauert ~7 Min (viele De
 Heute: Familie 132 / Alle Events 176.
 **Entschieden:** Umkreis-Filter (60 km) wird NICHT weiterverfolgt – der Radius ergibt sich
 indirekt aus den gewählten Quellen. (Erledigt/gestrichen.)
-**Offen (Datenqualität):**
-1. 130 datumslose Einträge (Pressemeldungen, z. B. delitzsch-stadt) aus der DB fernhalten.
-2. `tourismus-wurzen` liefert 0 → reparieren oder abschalten.
-3. `meinestadt-leipzig` bringt nur Dubletten → ggf. abschalten.
-4. urbanite/meinestadt/leipzig.de: Kategorie-Navigation ist JS → Rubriken vom Nutzer nennen lassen.
-5. KAOS-Kultursommer liegt bei leipzig-im unter „Konzert" (nicht freigegeben) – bewusst draußen.
+**Offen – nach Analyse des Crawl-Berichts vom 03.10.2026 (Reihenfolge nach Gewicht):**
+1. **Quellen liefern 0:** ✅ behoben am 03.10.: `leipzig-im` (neues Karten-Layout, alter Parser als
+   Rückfall), `urbanite` (neuer Typ `urbanite_days`: Tagesseiten `/leipzig/events/<datum>/`, 21 Tage,
+   Rubrik per CSS-Klasse `event_category-kinder-familie-2` gefiltert; weitere Rubriken über
+   `categories` in sources.json möglich: buehne-theater-show, festivals-feste-open-airs,
+   fuehrungen-touren-freizeit, kunst-ausstellung-museum, maerkte-messen-kongresse, sonstiges …),
+   `theater-junge-welt` (neuer Typ `tdjw`: Monatsseiten mit Seitenschaltung, 6 Monate, ~370 Termine).
+   ✅ `tourismus-wurzen` (03.10.): jetzt `listing_jsonld` über die Terminsuche (`suche.html?…termine=1`,
+   40 Links statt 7 auf der Übersicht) + Detailseiten-JSON-LD → 40 gefunden, 20 in DB nach Dedup.
+   ✅ Gleiche Umstellung (03.10.) bei `kultur-wurzen` (7), `grimma-stadt` (165), `delitzsch-stadt` (22):
+   Kommunal-CMS, Terminsuche → Detailseiten-JSON-LD; vorher nur Pressemeldungen (RSS). Alle vier
+   bleiben unter „Alle Events" (scope general, bewusst NICHT in „Familie": keine Kategorie auf den Seiten). `meinestadt-torgau`: 0 (evtl. nur keine Termine).
+   ✅ urbanite: nur Rubrik Kinder & Familie (Nutzerentscheidung; „Sonstiges"/„Stadtleben" bewusst
+   draußen). Ortsprüfung `nur_bekannte_orte`: Ort vor dem Komma der Adresse muss exakt im
+   Gazetteer (`geo.is_known_place`) stehen, sonst verworfen (Coburg, Frankfurt/Oder, Großenhain
+   …). Gazetteer um Freyburg, Weißenfels, Markranstädt ergänzt. urbanite deckt Grimma/Merseburg/
+   Eilenburg/Delitzsch gar nicht ab (0 Events) – die kommen von anderen Quellen.
+   ⚠ Bekannte Schwäche: andere Quellen haben die Ortsprüfung nicht (1284 von 2248 Events ohne
+   Entfernung, `ort` fällt dann auf die Quellenstadt).
+2. **Einträge ohne Datum:** ✅ 03.10.: werden beim Einlesen verworfen (`run.py`, Spalte „verworfen (ohne
+   Datum)" im Crawl-Bericht), 191 alte Einträge aus der DB gelöscht. Analyse: das waren überwiegend
+   Artikel, keine Termine. Textdatum-Extraktion lohnt nicht (≈17 von 191 zukünftig; leipzig-leben:
+   nur 6 von 69 aktuell, weil die Feeds nur die 10 neuesten, meist alten Artikel pro Rubrik liefern).
+   ✅ Anbindung geprüft (03.10.): alle 5 Familienquellen wurden fälschlich über den Blog-Feed gelesen.
+   `tiergarten-delitzsch` → neuer Typ `wp_page_list` (liest die <li>-Terminliste über die
+   WP-API, 14 Termine, 2 zukünftig). **Abgeschaltet** (`active:false`): `leipziger-kinderfestival`
+   (einzelne Jahresveranstaltung), `leipzig-fuer-lau` (keine Termine), `mamalismus` (Blog).
+   **Offen:** `lichtblick-familien` (Eltern-Kurse, Termine als Freitext, 10 zukünftige – Parser
+   nötig), 5× `leipzig-leben-*` (Feeds: nur Seite 1 gelesen, `?paged=2` liefert 10 weitere; Datum
+   steht nur im Titel, nur wenige aktuell), Pressemeldungen kultur-wurzen/grimma-stadt/delitzsch-stadt.
+   Crawl-Bericht: Spalte „ohne Datum"; Einträge zusätzlich in `data/export/ohne_datum.csv`.
+3. **meinestadt (03.10., korrigiert):** Die 5 „Dubletten" (leipzig, grimma, wurzen, delitzsch, eilenburg)
+   waren NICHT Dubletten anderer Quellen, sondern der anderen meinestadt-Städteseiten: die Seiten
+   zeigen regional dieselben Termine (Summe 182 → eindeutig 67). Davon sind nur 10 auch bei unseren
+   anderen Quellen, 57 sind NUR bei meinestadt (meinestadt ist also wertvoll). Die 5 laufen jetzt als
+   reine **Gegenprobe** (`check:true`, nicht in der DB; kein Verlust, da alle 67 über die aktiven
+   Seiten in der DB sind). Alle meinestadt-Städte tragen `gegenprobe:true` → nach jedem Crawl
+   `data/export/gegenprobe.csv` (Abdeckung je Stadt gegen NICHT-meinestadt-Quellen) und
+   `gegenprobe_fehlt.csv` (Termine, die nur meinestadt kennt). Ansicht „Gegenprobe" auf der Quellen-Seite.
+   meinestadt liefert max. 20/Stadtseite (Seitenparameter wirkungslos); `meinestadt-torgau`: 0 korrekt.
+   ⚠ Schwäche: `address` ist bei meinestadt nur die Seitenstadt – Veranstaltungsorte in anderen Orten
+   (Gera, Glauchau, Limbach-Oberfrohna) werden der Seitenstadt zugeordnet. Bei doppelten Events gewinnt
+   die zuletzt gecrawlte Quelle (`upsert` überschreibt source_id).
+4. 41 Events ohne Ort (`ort` NULL).
+5. urbanite/meinestadt/leipzig.de Kategorie-Navigation JS → Rubriken vom Nutzer nennen lassen.
+6. KAOS-Kultursommer (leipzig-im „Konzert") bewusst draußen. Crawl dauert ~7 Min (optional).
 **Neu geplant:** Projekt nach GitHub (Code) + Hosting/Cloud-Zugriff von anderen Geräten.
 
 ## Architektur (Dateien)

@@ -117,7 +117,8 @@ def query_sources() -> dict:
             "id": s["id"], "type": s["type"], "active": s.get("active", True),
             "url": s.get("url") or s.get("base", ""),
             "note": s.get("note", ""), "n": n,
-            "ansicht": "Alle Events" if s.get("scope") == "general" else "Familie",
+            "ansicht": ("Gegenprobe" if s.get("check")
+                        else "Alle Events" if s.get("scope") == "general" else "Familie"),
         })
     out.sort(key=lambda r: (-r["n"], r["id"]))
     return {"sources": out, "venues": cfg.get("venues_seed", [])}

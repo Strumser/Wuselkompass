@@ -39,6 +39,19 @@ def collect(source: dict) -> list[dict]:
         return extractors.kreuzer_api(
             sid, ressort=source.get("ressort", "kinder-familie"), ua=ua)
 
+    if typ == "urbanite_days":
+        return extractors.urbanite_days(
+            sid, source.get("categories", ["kinder-familie-2"]), ua=ua,
+            days=source.get("days", 21),
+            nur_bekannte_orte=source.get("nur_bekannte_orte", True))
+
+    if typ == "wp_page_list":
+        return extractors.wp_page_list(sid, source["api"], source["url"],
+                                       source["venue"], source["address"])
+
+    if typ == "tdjw":
+        return extractors.tdjw_events(sid, months=source.get("months", 6), ua=ua)
+
     if typ == "leipziginfo":
         return extractors.leipziginfo_events(sid, ua=ua)
 
@@ -137,6 +150,8 @@ def _crawl():
 
     total_raw = total_kept = 0
     report_rows = []
+    undated_rows = []
+    seen_ids = {}      # source_id -> {event_id: enriched} (für die Gegenprobe)
     with store.connect() as conn:
         # Dauer-Locations (venues) laden
         for v in cfg.get("venues_seed", []):
@@ -159,12 +174,17 @@ def _crawl():
             except Exception as e:                       # eine Quelle darf nicht alles stoppen
                 print(f"    [error] {e}")
                 report_rows.append({"source_id": src["id"], "raw": 0, "kept": 0,
-                                    "past": 0, "radius": 0})
+                                    "past": 0, "radius": 0, "nodate": 0})
                 continue
-            kept = past = radius = 0
+            kept = past = radius = nodate = 0
             fam_default = src.get("family_default", 0.0)
             city = src.get("city")
             for ev in raw:
+                if not ev.get("start_at"):               # ohne Datum = keine Veranstaltung
+                    nodate += 1
+                    undated_rows.append({"source_id": src["id"], "title": ev.get("title"),
+                                         "url": ev.get("source_url")})
+                    continue
                 if not pipeline.is_future(ev):           # vergangen
                     past += 1
                     continue
@@ -174,13 +194,36 @@ def _crawl():
                 if enriched is None:                     # ausserhalb 60 km
                     radius += 1
                     continue
+                seen_ids.setdefault(src["id"], {})[enriched["id"]] = enriched
+                if src.get("check"):                     # nur Gegenprobe: nicht in die DB
+                    continue
                 store.upsert_event(conn, enriched)
                 kept += 1
             total_raw += len(raw)
             total_kept += kept
             report_rows.append({"source_id": src["id"], "raw": len(raw), "kept": kept,
-                                "past": past, "radius": radius})
+                                "past": past, "radius": radius,
+                                "nodate": nodate})
             print(f"    roh: {len(raw):4d} | uebernommen: {kept:4d}")
+
+        # Gegenprobe: Welche Termine einer Vergleichsquelle (z. B. meinestadt) kennen wir
+        # bereits aus ANDEREN Quellen, welche nur dort?
+        gp_ids = {sid for sid in seen_ids
+                  if any(x["id"] == sid and x.get("gegenprobe") for x in cfg["sources"])}
+        other_ids = set()
+        for sid, evs_ in seen_ids.items():
+            if sid not in gp_ids:
+                other_ids |= set(evs_)
+        gp_rows, gp_missing = [], []
+        for sid in sorted(gp_ids):
+            evs_ = seen_ids[sid]
+            missing = [e for i, e in evs_.items() if i not in other_ids]
+            gp_rows.append({"source_id": sid, "found": len(evs_),
+                            "covered": len(evs_) - len(missing), "missing": len(missing)})
+            for e in missing:
+                gp_missing.append({"source_id": sid, "start_at": e.get("start_at"),
+                                   "title": e.get("title"), "venue": e.get("venue_name"),
+                                   "url": e.get("source_url")})
 
         # Vergangene Termine entfernen – erst löschen, wenn das ENDE vor heute liegt
         # (mehrtägige Veranstaltungen bleiben, solange sie noch laufen).
@@ -198,6 +241,8 @@ def _crawl():
     try:
         from tools import report as _report
         _report.save_crawl_report(report_rows)
+        _report.save_undated(undated_rows)
+        _report.save_gegenprobe(gp_rows, gp_missing)
         _report.export_events()
     except Exception as e:
         print(f"    [warn] CSV-Export fehlgeschlagen: {e}")

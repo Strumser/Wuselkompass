@@ -5,108 +5,125 @@
       "type": "jsonld",
       "active": true,
       "url": "https://veranstaltungen.meinestadt.de/leipzig/kinderveranstaltungen/alle",
-      "note": "Backbone-Aggregator",
+      "note": "Gegenprobe (nicht in der App): vergleicht mit unseren anderen Quellen",
       "family_default": 0.5,
-      "city": "Leipzig"
+      "city": "Leipzig",
+      "gegenprobe": true,
+      "check": true
     },
     {
       "id": "meinestadt-halle",
       "type": "jsonld",
       "active": true,
       "url": "https://veranstaltungen.meinestadt.de/halle-saale/kinderveranstaltungen/alle",
-      "note": "Umland Halle",
+      "note": "Umland; eigene Termine + Gegenprobe",
       "family_default": 0.5,
-      "city": "Halle (Saale)"
+      "city": "Halle (Saale)",
+      "gegenprobe": true
     },
     {
       "id": "meinestadt-grimma",
       "type": "jsonld",
       "active": true,
       "url": "https://veranstaltungen.meinestadt.de/grimma/kinderveranstaltungen/alle",
-      "note": "Umland",
+      "note": "Gegenprobe (nicht in der App): vergleicht mit unseren anderen Quellen",
       "family_default": 0.5,
-      "city": "Grimma"
+      "city": "Grimma",
+      "gegenprobe": true,
+      "check": true
     },
     {
       "id": "meinestadt-borna",
       "type": "jsonld",
       "active": true,
       "url": "https://veranstaltungen.meinestadt.de/borna/kinderveranstaltungen/alle",
-      "note": "Umland",
+      "note": "Umland; eigene Termine + Gegenprobe",
       "family_default": 0.5,
-      "city": "Borna"
+      "city": "Borna",
+      "gegenprobe": true
     },
     {
       "id": "meinestadt-wurzen",
       "type": "jsonld",
       "active": true,
       "url": "https://veranstaltungen.meinestadt.de/wurzen/kinderveranstaltungen/alle",
-      "note": "Umland",
+      "note": "Gegenprobe (nicht in der App): vergleicht mit unseren anderen Quellen",
       "family_default": 0.5,
-      "city": "Wurzen"
+      "city": "Wurzen",
+      "gegenprobe": true,
+      "check": true
     },
     {
       "id": "meinestadt-delitzsch",
       "type": "jsonld",
       "active": true,
       "url": "https://veranstaltungen.meinestadt.de/delitzsch/kinderveranstaltungen/alle",
-      "note": "Umland",
+      "note": "Gegenprobe (nicht in der App): vergleicht mit unseren anderen Quellen",
       "family_default": 0.5,
-      "city": "Delitzsch"
+      "city": "Delitzsch",
+      "gegenprobe": true,
+      "check": true
     },
     {
       "id": "meinestadt-torgau",
       "type": "jsonld",
       "active": true,
       "url": "https://veranstaltungen.meinestadt.de/torgau/kinderveranstaltungen/alle",
-      "note": "Umland",
+      "note": "Umland; Seite aktuell ohne Kinderveranstaltungen (0 ist korrekt)",
       "family_default": 0.5,
-      "city": "Torgau"
+      "city": "Torgau",
+      "gegenprobe": true
     },
     {
       "id": "meinestadt-merseburg",
       "type": "jsonld",
       "active": true,
       "url": "https://veranstaltungen.meinestadt.de/merseburg/kinderveranstaltungen/alle",
-      "note": "Umland",
+      "note": "Umland; eigene Termine + Gegenprobe",
       "family_default": 0.5,
-      "city": "Merseburg"
+      "city": "Merseburg",
+      "gegenprobe": true
     },
     {
       "id": "meinestadt-naumburg",
       "type": "jsonld",
       "active": true,
       "url": "https://veranstaltungen.meinestadt.de/naumburg-saale/kinderveranstaltungen/alle",
-      "note": "Umland",
+      "note": "Umland; eigene Termine + Gegenprobe",
       "family_default": 0.5,
-      "city": "Naumburg"
+      "city": "Naumburg",
+      "gegenprobe": true
     },
     {
       "id": "meinestadt-altenburg",
       "type": "jsonld",
       "active": true,
       "url": "https://veranstaltungen.meinestadt.de/altenburg/kinderveranstaltungen/alle",
-      "note": "Umland",
+      "note": "Umland; eigene Termine + Gegenprobe",
       "family_default": 0.5,
-      "city": "Altenburg"
+      "city": "Altenburg",
+      "gegenprobe": true
     },
     {
       "id": "meinestadt-eilenburg",
       "type": "jsonld",
       "active": true,
       "url": "https://veranstaltungen.meinestadt.de/eilenburg/kinderveranstaltungen/alle",
-      "note": "Umland",
+      "note": "Gegenprobe (nicht in der App): vergleicht mit unseren anderen Quellen",
       "family_default": 0.5,
-      "city": "Eilenburg"
+      "city": "Eilenburg",
+      "gegenprobe": true,
+      "check": true
     },
     {
       "id": "meinestadt-markkleeberg",
       "type": "jsonld",
       "active": true,
       "url": "https://veranstaltungen.meinestadt.de/markkleeberg/kinderveranstaltungen/alle",
-      "note": "Umland",
+      "note": "Umland; eigene Termine + Gegenprobe",
       "family_default": 0.5,
-      "city": "Markkleeberg"
+      "city": "Markkleeberg",
+      "gegenprobe": true
     },
     {
       "id": "eventfinder-delitzsch",
@@ -164,21 +181,25 @@
     },
     {
       "id": "theater-junge-welt",
-      "type": "jsonld",
+      "type": "tdjw",
       "active": true,
-      "url": "https://www.theaterderjungenweltleipzig.de/wann-und-was/spielplan/",
-      "note": "Kinder-/Jugendtheater",
+      "url": "https://www.theaterderjungenweltleipzig.de/spielplan/spielplan",
+      "note": "Kinder-/Jugendtheater, Spielplan je Monat mit Seitenschaltung",
       "family_default": 0.55,
-      "city": "Leipzig"
+      "city": "Leipzig",
+      "months": 6
     },
     {
       "id": "tourismus-wurzen",
-      "type": "jsonld",
+      "type": "listing_jsonld",
       "active": true,
-      "url": "https://www.tourismus-wurzen.de/veranstaltungen/alle-veranstaltungen-wurzen-region-finden/",
-      "note": "JSON-LD bestätigt (7)",
+      "url": "https://www.tourismus-wurzen.de/regional/veranstaltungen/suche.html?ressort=0&layout=1&titel=Veranstaltungssuche&suche=1&termine=1&regional=0",
+      "note": "Kommunal-CMS: Terminsuche -> Detailseiten-JSON-LD",
       "city": "Wurzen",
-      "scope": "general"
+      "scope": "general",
+      "base": "https://www.tourismus-wurzen.de",
+      "link_re": "(/regional/veranstaltungen/[a-z0-9-]+-\\d+-22901\\.html)",
+      "limit": 80
     },
     {
       "id": "muetterzentrum-fiz",
@@ -200,21 +221,27 @@
     },
     {
       "id": "grimma-stadt",
-      "type": "auto",
+      "type": "listing_jsonld",
       "active": true,
-      "url": "https://www.grimma.de/portal/seiten/veranstaltungen-900000302-27290.html",
-      "note": "Kommunal-CMS Sachsen",
+      "url": "https://www.grimma.de/regional/veranstaltungen/suche.html?intern=0&titel=Veranstaltungssuche&layout=1&suche=1&termine=1&regional=0",
+      "note": "Kommunal-CMS: Terminsuche -> Detailseiten-JSON-LD",
       "city": "Grimma",
-      "scope": "general"
+      "scope": "general",
+      "base": "https://www.grimma.de",
+      "link_re": "(/regional/veranstaltungen/[a-z0-9-]+-\\d+-\\d+\\.html)",
+      "limit": 170
     },
     {
       "id": "delitzsch-stadt",
-      "type": "auto",
+      "type": "listing_jsonld",
       "active": true,
-      "url": "https://www.delitzsch.de/entdecken/veranstaltungen/",
-      "note": "Kommunal-CMS Sachsen",
+      "url": "https://www.delitzsch.de/regional/veranstaltungen/suche.html?intern=0&titel=Veranstaltungssuche&layout=1&suche=1&termine=1&regional=0",
+      "note": "Kommunal-CMS: Terminsuche -> Detailseiten-JSON-LD",
       "city": "Delitzsch",
-      "scope": "general"
+      "scope": "general",
+      "base": "https://www.delitzsch.de",
+      "link_re": "(/regional/veranstaltungen/[a-z0-9-]+-\\d+-\\d+\\.html)",
+      "limit": 60
     },
     {
       "id": "markkleeberg-stadt",
@@ -235,12 +262,15 @@
     },
     {
       "id": "kultur-wurzen",
-      "type": "auto",
+      "type": "listing_jsonld",
       "active": true,
-      "url": "https://www.kultur-wurzen.de/portal/aseiten/veranstaltungen-10001-22901.html",
-      "note": "Umland Wurzen",
+      "url": "https://www.kultur-wurzen.de/regional/veranstaltungen/suche.html?ressort=0&layout=1&titel=Veranstaltungssuche&suche=1&termine=1&regional=0",
+      "note": "Kommunal-CMS: Terminsuche -> Detailseiten-JSON-LD",
       "city": "Wurzen",
-      "scope": "general"
+      "scope": "general",
+      "base": "https://www.kultur-wurzen.de",
+      "link_re": "(/regional/veranstaltungen/[a-z0-9-]+-\\d+-\\d+\\.html)",
+      "limit": 60
     },
     {
       "id": "leipzig-leben",
@@ -290,9 +320,9 @@
     {
       "id": "mamalismus",
       "type": "auto",
-      "active": true,
+      "active": false,
       "url": "https://mamalismus.de/",
-      "note": "Leipziger Mamablog",
+      "note": "abgeschaltet 2026-10-03: Blog, keine Termine",
       "family_default": 0.4,
       "city": "Leipzig"
     },
@@ -307,27 +337,30 @@
     {
       "id": "leipzig-fuer-lau",
       "type": "auto",
-      "active": true,
+      "active": false,
       "url": "https://leipzig-fuer-lau.de/veranstaltungen-bibliotheken/",
-      "note": "kostenlose Angebote",
+      "note": "abgeschaltet 2026-10-03: zeitlose Angebote ohne Termine",
       "family_default": 0.4,
       "city": "Leipzig"
     },
     {
       "id": "tiergarten-delitzsch",
-      "type": "auto",
+      "type": "wp_page_list",
       "active": true,
       "url": "https://tiergarten-delitzsch.com/veranstaltungen/",
-      "note": "WP",
+      "note": "Terminliste (Seite /veranstaltungen/), <li>-Parser",
       "family_default": 0.45,
-      "city": "Delitzsch"
+      "city": "Delitzsch",
+      "api": "https://tiergarten-delitzsch.com/wp-json/wp/v2/pages/26",
+      "venue": "Tiergarten Delitzsch",
+      "address": "Tiergarten Delitzsch, Delitzsch"
     },
     {
       "id": "leipziger-kinderfestival",
       "type": "auto",
-      "active": true,
+      "active": false,
       "url": "https://www.leipziger-kinderfestival.de/",
-      "note": "WP",
+      "note": "abgeschaltet 2026-10-03: einzelne Jahresveranstaltung (Testbeiträge im Feed), keine Terminliste",
       "family_default": 0.7,
       "city": "Leipzig"
     },
@@ -552,15 +585,17 @@
     },
     {
       "id": "urbanite",
-      "type": "html",
-      "parser": "urbanite",
+      "type": "urbanite_days",
       "active": true,
-      "pages": 6,
-      "url": "https://www.urbanite.net/leipzig/events/kategorie/kinder-familie/",
+      "url": "https://www.urbanite.net/leipzig/events/",
       "family_default": 0.5,
       "city": "Leipzig",
-      "note": "Stadtmagazin, Kinder-Familie-Kategorie (Browser-UA)",
-      "ua": "browser"
+      "note": "Stadtmagazin, Tagesseiten, Rubrik kinder-familie-2 (Browser-UA)",
+      "ua": "browser",
+      "categories": [
+        "kinder-familie-2"
+      ],
+      "days": 21
     },
     {
       "id": "ahoi-leipzig",

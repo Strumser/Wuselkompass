@@ -20,6 +20,9 @@ SOURCES = os.path.join(ROOT, "sources.json")
 EXPORT_DIR = os.path.join(ROOT, "data", "export")
 EVENTS_CSV = os.path.join(EXPORT_DIR, "events.csv")
 REPORT_CSV = os.path.join(EXPORT_DIR, "crawl_report.csv")
+UNDATED_CSV = os.path.join(EXPORT_DIR, "ohne_datum.csv")
+GEGENPROBE_CSV = os.path.join(EXPORT_DIR, "gegenprobe.csv")
+GEGENPROBE_FEHLT_CSV = os.path.join(EXPORT_DIR, "gegenprobe_fehlt.csv")
 
 
 def scope_map() -> dict:
@@ -29,7 +32,8 @@ def scope_map() -> dict:
             cfg = json.load(f)
     except (OSError, ValueError):
         return {}
-    return {s["id"]: ("Alle Events" if s.get("scope") == "general" else "Familie")
+    return {s["id"]: ("Gegenprobe" if s.get("check")
+                      else "Alle Events" if s.get("scope") == "general" else "Familie")
             for s in cfg.get("sources", [])}
 
 
@@ -64,6 +68,7 @@ def export_events(path: str = EVENTS_CSV) -> int:
 # Spalten der Crawl-Report-CSV (eine Zeile je Quelle).
 _REPORT_HEADERS = ["Quelle", "Ansicht", "gefunden", "übernommen",
                    "verworfen (vergangen)", "verworfen (außerhalb 60 km)",
+                   "ohne Datum",
                    "in DB (nach Dedup)"]
 
 
@@ -78,9 +83,39 @@ def save_crawl_report(rows: list[dict], path: str = REPORT_CSV) -> int:
             w.writerow([
                 r["source_id"], smap.get(r["source_id"], "Familie"),
                 r.get("raw", 0), r.get("kept", 0), r.get("past", 0),
-                r.get("radius", 0), r.get("in_db", 0),
+                r.get("radius", 0), r.get("nodate", 0), r.get("in_db", 0),
             ])
     return len(rows)
+
+
+def save_undated(rows: list[dict], path: str = UNDATED_CSV) -> int:
+    """Einträge ohne Datum (nicht in der DB) separat ausweisen: Quelle, Titel, Link."""
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8-sig", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["Quelle", "Titel", "Link"])
+        for r in rows:
+            w.writerow([r["source_id"], r["title"], r.get("url") or ""])
+    return len(rows)
+
+
+def save_gegenprobe(rows: list[dict], missing: list[dict]) -> None:
+    """Gegenprobe gegen Vergleichsquellen (meinestadt): Abdeckung je Quelle + Liste der
+    Termine, die wir aus keiner anderen Quelle kennen. Der Vergleich läuft über die Dedup-ID
+    (Titel|Tag|Ort); abweichende Schreibweisen zählen deshalb als „fehlt"."""
+    os.makedirs(EXPORT_DIR, exist_ok=True)
+    with open(GEGENPROBE_CSV, "w", encoding="utf-8-sig", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["Quelle", "Termine bei der Vergleichsquelle", "auch bei anderen Quellen",
+                    "nur bei der Vergleichsquelle", "Abdeckung %"])
+        for r in rows:
+            pct = round(100 * r["covered"] / r["found"]) if r["found"] else ""
+            w.writerow([r["source_id"], r["found"], r["covered"], r["missing"], pct])
+    with open(GEGENPROBE_FEHLT_CSV, "w", encoding="utf-8-sig", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["Quelle", "Beginn", "Titel", "Veranstaltungsort", "Link"])
+        for r in sorted(missing, key=lambda x: (x["source_id"], x["start_at"] or "")):
+            w.writerow([r["source_id"], r["start_at"], r["title"], r["venue"], r["url"] or ""])
 
 
 def main():
