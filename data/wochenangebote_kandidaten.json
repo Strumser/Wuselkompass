@@ -1,0 +1,330 @@
+[
+ {
+  "id": "W1",
+  "angebot": "Kawi Kids – offenes Spielen",
+  "zeiten": "täglich 9–12 und 15–18 Uhr; bis 2 J., Do/So 15–18 und Feiertage auch 3–5 J. · Südvorstadt",
+  "beleg": "ok",
+  "nur_babys": false,
+  "region": "Leipzig",
+  "hinweise": []
+ },
+ {
+  "id": "W2",
+  "angebot": "Kinderwelt Gohlis (Hummelbienchen) – Spielzeiten",
+  "zeiten": "Do/Fr 10–11:30 und 15:30–17 Uhr, Sa 9:30–11:30 · 9 Mon.–3/4 J. · Corinthstr. 6",
+  "beleg": "mid",
+  "nur_babys": false,
+  "region": "Leipzig",
+  "hinweise": []
+ },
+ {
+  "id": "W3",
+  "angebot": "Familienzentrum Tüpfelhausen – offenes Elterncafé",
+  "zeiten": "Mo–Di 10–15:30, Mi–Fr 10–18 Uhr · 0–6 J. · Georg-Schwarz-Str. 116, Leutzsch",
+  "beleg": "ok",
+  "nur_babys": false,
+  "region": "Leipzig",
+  "hinweise": []
+ },
+ {
+  "id": "W4",
+  "angebot": "Familienzentrum GeyserHaus – Krabbelstunde, Papa-Café, Familienfrühstück",
+  "zeiten": "Haus offen Mo 9–15, Di 9–17:30, Mi 9–17, Do 9–14, Fr 9–13 · 0–6 J. · Zeiten der einzelnen Angebote nicht belegt, Stand 01/2023",
+  "beleg": "mid",
+  "nur_babys": false,
+  "region": "Leipzig",
+  "hinweise": [
+   "Zeiten Stand 2023"
+  ]
+ },
+ {
+  "id": "W5",
+  "angebot": "Familienzentrum Schönefeld (CVJM) – Eltern-Kind-Gruppe",
+  "zeiten": "Di 9–10 Uhr · Eltern + Kinder · Alter offen",
+  "beleg": "ok",
+  "nur_babys": false,
+  "region": "Leipzig",
+  "hinweise": []
+ },
+ {
+  "id": "W6",
+  "angebot": "Eltern-Kind-Café Dresdner59, Reudnitz",
+  "zeiten": "Do 10–12 Uhr · Krabbelkinder · Eintrag von 2017",
+  "beleg": "low",
+  "nur_babys": true,
+  "region": "Leipzig",
+  "hinweise": [
+   "veraltet"
+  ]
+ },
+ {
+  "id": "W7",
+  "angebot": "Knirps-Kino (Cineplex Leipzig)",
+  "zeiten": "So 10:30 Uhr · Kleinstkinder + Eltern · Eintrag von 2019",
+  "beleg": "low",
+  "nur_babys": false,
+  "region": "Leipzig",
+  "hinweise": [
+   "veraltet"
+  ]
+ },
+ {
+  "id": "W8",
+  "angebot": "BWG Erlebnishaus Halle – offener Krabbeltreff",
+  "zeiten": "Mo 10–12 Uhr (außer Schulferien/Feiertage) · Babys/Kleinkinder",
+  "beleg": "mid",
+  "nur_babys": true,
+  "region": "Halle (Saale)",
+  "hinweise": [
+   "nicht in den Ferien"
+  ]
+ },
+ {
+  "id": "W9",
+  "angebot": "Familiencafé Völkchen Halle – offenes Familiencafé",
+  "zeiten": "Di, Do 9:30–12; Mi 9:30–12 + 14–17; Fr 9:30–12 (1./3. Fr auch 14–17) · Babys/Kleinkinder",
+  "beleg": "ok",
+  "nur_babys": false,
+  "region": "Halle (Saale)",
+  "hinweise": []
+ },
+ {
+  "id": "W10",
+  "angebot": "Familiencafé Völkchen Halle – Krabbelcafé",
+  "zeiten": "Mi 9:30–11:30 Uhr · Babys",
+  "beleg": "ok",
+  "nur_babys": true,
+  "region": "Halle (Saale)",
+  "hinweise": []
+ },
+ {
+  "id": "W11",
+  "angebot": "Kinderschutzbund Halle – Krabbelgruppe",
+  "zeiten": "Di 9:30–11:30 Uhr · Anhalter Platz 1",
+  "beleg": "ok",
+  "nur_babys": true,
+  "region": "Halle (Saale)",
+  "hinweise": []
+ },
+ {
+  "id": "W12",
+  "angebot": "Kinderschutzbund Halle – Naturzeit",
+  "zeiten": "Mi 9–11 Uhr · Alter offen",
+  "beleg": "ok",
+  "nur_babys": false,
+  "region": "Halle (Saale)",
+  "hinweise": []
+ },
+ {
+  "id": "W13",
+  "angebot": "Kinderschutzbund Halle – Familienfrühstück",
+  "zeiten": "Fr 9:30–11:30 (1./3. Fr im Monat, Anmeldung)",
+  "beleg": "ok",
+  "nur_babys": false,
+  "region": "Halle (Saale)",
+  "hinweise": [
+   "Anmeldung nötig"
+  ]
+ },
+ {
+  "id": "W14",
+  "angebot": "Kinderschutzbund Halle – Familiennachmittag / Eltern-Kind-Spieletreff",
+  "zeiten": "Do 15–17:30 Uhr (Verzeichnis: 15:30–17:30)",
+  "beleg": "ok",
+  "nur_babys": false,
+  "region": "Halle (Saale)",
+  "hinweise": []
+ },
+ {
+  "id": "W15",
+  "angebot": "Franckesche Stiftungen Halle – offene Spielgruppe",
+  "zeiten": "Di 14–17, Mi 12:30–14:30, Do 10–12 · Babys/Kleinkinder · Quellen widersprüchlich",
+  "beleg": "mid",
+  "nur_babys": false,
+  "region": "Halle (Saale)",
+  "hinweise": [
+   "Zeiten widersprüchlich"
+  ]
+ },
+ {
+  "id": "W16",
+  "angebot": "IRIS e. V. Halle – offene Krabbelgruppen",
+  "zeiten": "Di + Do 9–12; Ü1 Fr 9–11 · Schleiermacherstr. 39",
+  "beleg": "mid",
+  "nur_babys": true,
+  "region": "Halle (Saale)",
+  "hinweise": []
+ },
+ {
+  "id": "W17",
+  "angebot": "Baby & Me (1Step) Halle – Krabbel-/Spielgruppen",
+  "zeiten": "Mi + Do 9:30–11:30 · Schleiermacherstr. 15",
+  "beleg": "mid",
+  "nur_babys": true,
+  "region": "Halle (Saale)",
+  "hinweise": []
+ },
+ {
+  "id": "W18",
+  "angebot": "Geburtshaus Lebenslicht Halle – offene Krabbelgruppe",
+  "zeiten": "Mi 9–10 Uhr · Lafontainestr. 28",
+  "beleg": "mid",
+  "nur_babys": true,
+  "region": "Halle (Saale)",
+  "hinweise": []
+ },
+ {
+  "id": "W19",
+  "angebot": "eXxtra CVJM Halle – Krabbelgruppe",
+  "zeiten": "Di 9–12 Uhr · Lilienstr. 25A",
+  "beleg": "mid",
+  "nur_babys": true,
+  "region": "Halle (Saale)",
+  "hinweise": []
+ },
+ {
+  "id": "W20",
+  "angebot": "Die Wasserflöhe Halle – Babyschwimmen 0–2,5 J. / Eltern-Kind-Schwimmen 2,5–5 J.",
+  "zeiten": "Mi 14:30–16:30 (3 Gruppen), Kurse mit 6–8 Einheiten",
+  "beleg": "ok",
+  "nur_babys": false,
+  "region": "Halle (Saale)",
+  "hinweise": [
+   "Kurs, Anmeldung"
+  ]
+ },
+ {
+  "id": "W21",
+  "angebot": "Landesmuseum für Vorgeschichte Halle – Familiennachmittag",
+  "zeiten": "letzter Sonntag im Monat · Eintritt bis 18 J. frei · Quelle April 2025",
+  "beleg": "mid",
+  "nur_babys": false,
+  "region": "Halle (Saale)",
+  "hinweise": []
+ },
+ {
+  "id": "W22",
+  "angebot": "Krabbelgruppe Bad Dürrenberg (Frühe Hilfen)",
+  "zeiten": "14-tägig Do 10–12 Uhr (ab 13.08.2026) · Eltern + Kleinkinder",
+  "beleg": "mid",
+  "nur_babys": false,
+  "region": "Saalekreis",
+  "hinweise": []
+ },
+ {
+  "id": "W23",
+  "angebot": "Krabbelgruppe Merseburg (St. Norbert)",
+  "zeiten": "Di 9:30–11 Uhr, außer Ferien",
+  "beleg": "mid",
+  "nur_babys": true,
+  "region": "Saalekreis",
+  "hinweise": [
+   "nicht in den Ferien"
+  ]
+ },
+ {
+  "id": "W24",
+  "angebot": "Krabbelgruppe Mücheln-Langeneichstädt",
+  "zeiten": "Di 9:30–11 Uhr",
+  "beleg": "mid",
+  "nur_babys": true,
+  "region": "Saalekreis",
+  "hinweise": []
+ },
+ {
+  "id": "W25",
+  "angebot": "SingKlangBabyZeit Querfurt",
+  "zeiten": "Do 10 Uhr · Babys",
+  "beleg": "mid",
+  "nur_babys": true,
+  "region": "Saalekreis",
+  "hinweise": []
+ },
+ {
+  "id": "W26",
+  "angebot": "CVJM-Krabbelgruppen Saalekreis",
+  "zeiten": "Bad Lauchstädt Mo 9:30–11 · Landsberg Do 9:30–11 · Petersberg-Teicha Mi 9:30–11 · Salzatal Di 9:30–11",
+  "beleg": "mid",
+  "nur_babys": true,
+  "region": "Saalekreis",
+  "hinweise": []
+ },
+ {
+  "id": "W27",
+  "angebot": "Eltern-Kind-Treff Wettin-Löbejün",
+  "zeiten": "Di 15–16:30 Uhr, monatlich · Kleinkinder",
+  "beleg": "mid",
+  "nur_babys": false,
+  "region": "Saalekreis",
+  "hinweise": []
+ },
+ {
+  "id": "W28",
+  "angebot": "Krabbelgruppe Lieskau (DLL)",
+  "zeiten": "Do 10–11 Uhr",
+  "beleg": "mid",
+  "nur_babys": true,
+  "region": "Saalekreis",
+  "hinweise": []
+ },
+ {
+  "id": "W29",
+  "angebot": "Krabbelgruppe Kita Bärchen Eilenburg",
+  "zeiten": "Mo 9–10:30 Uhr · Babys bis ca. 1,5 J. · Rhythmus widersprüchlich",
+  "beleg": "ok",
+  "nur_babys": true,
+  "region": "Umland Leipzig/Altenburg",
+  "hinweise": [
+   "Zeiten klären"
+  ]
+ },
+ {
+  "id": "W30",
+  "angebot": "Familienzentrum Markkleeberg (Lichtblick) – offener Treff",
+  "zeiten": "Do 15–17 Uhr · 0–7 J.; Krabbelgruppe Mi 9:30 (Orangerie Gaschwitz)",
+  "beleg": "ok",
+  "nur_babys": false,
+  "region": "Umland Leipzig/Altenburg",
+  "hinweise": []
+ },
+ {
+  "id": "W31",
+  "angebot": "Residenzschloss Altenburg – Kartenmacherwerkstatt",
+  "zeiten": "Fr 14/15 Uhr (Drucktag) · Alter unbelegt",
+  "beleg": "ok",
+  "nur_babys": false,
+  "region": "Umland Leipzig/Altenburg",
+  "hinweise": []
+ },
+ {
+  "id": "W32",
+  "angebot": "Jump'n'Play Chemnitz – MINIJUMPY",
+  "zeiten": "jeden So 9–10 Uhr inkl. Tageskarte, ab 8 € · 0–4 J.",
+  "beleg": "ok",
+  "nur_babys": false,
+  "region": "Chemnitz",
+  "hinweise": []
+ },
+ {
+  "id": "W33",
+  "angebot": "Kohlebahn Meuselwitz",
+  "zeiten": "So 10:30 und 14:30 Uhr · Apr–Okt, Saison beendet",
+  "beleg": "ok",
+  "nur_babys": false,
+  "region": "Umland Leipzig/Altenburg",
+  "hinweise": [
+   "Saison vorbei"
+  ]
+ },
+ {
+  "id": "W34",
+  "angebot": "Flugwelt Altenburg-Nobitz",
+  "zeiten": "Sa/So/Feiertage 10–17 Uhr · Apr–Okt, Saison beendet",
+  "beleg": "ok",
+  "nur_babys": false,
+  "region": "Umland Leipzig/Altenburg",
+  "hinweise": [
+   "Saison vorbei"
+  ]
+ }
+]

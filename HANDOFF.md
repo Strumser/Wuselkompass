@@ -137,3 +137,11 @@ mit ihrem alten START-Datum ganz oben. Fix in `webapp/serve.py` `render()`:
   markkleeberg-stadt, kultur-wurzen, ahoi-leipzig, leipziginfo.
 - D inhärent familiär: theater-junge-welt, muetterzentrum-fiz, lipzkidz,
   leipziger-kinderfestival, lichtblick-familien, mamalismus, leipzig-fuer-lau, tiergarten-delitzsch.
+
+## Entscheidungen 2026-10-31
+- **Dauer-Locations:** Auswahl vom Nutzer liegt vor (91 von 103; Draußen-Spielplätze, B7–B10, D4 abgewählt):
+  A1–A4, B1–B6, C1–C14, D1–D3, D5–D15, E1–E18, F1–F10, H1–H12, I1–I11, J1–J2. Kürzel siehe DAUERLOCATIONS_recherche.md.
+- **Geplant (Phasen):** 1 Quellen-Gesundheit nur als Erreichbarkeits-Ampel (bei Rot Nutzer informiert, Claude sucht Ursache),
+  2 Datenmodell Orte + wöchentliche Angebote, 3 Altersfilter (nur „ab 2 / ab 3 / ab 4"), 4 Reiter „Orte" + Wochenraster,
+  5 Reparatur nur nach manueller Freigabe. Arbeit auf Branch `v2-orte-alter`.
+- **Chemnitz wird eigene Region** (Variante 3, ca. 69 km von Leipzig): eigene Quellen + Orte + Ortsfilter; Recherche-Agenten laufen.
