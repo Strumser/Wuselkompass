@@ -907,7 +907,7 @@
   "age_max": null,
   "url": null,
   "beleg": "mid",
-  "note": "Schongauer Straße 19, 04329 Leipzig-Paunsdorf · Rutschen, Wellenbad, Kinderbereich, Schwimmschule, Kinder-/Babyschwimmkurse · täglich 10–22 Uhr · ~",
+  "note": "Schongauer Straße 19, 04329 Leipzig-Paunsdorf · Rutschen, Wellenbad, Kinderbereich, Schwimmschule, Kinder-/Babyschwimmkurse · täglich 10–22 Uhr",
   "checked_at": "2026-10-12",
   "status": "aktiv"
  },
@@ -923,7 +923,7 @@
   "age_max": null,
   "url": null,
   "beleg": "mid",
-  "note": "Am Riff 3, 04651 Bad Lausick · eigener Kleinkindbereich (33 °C), Babyschwimmen · ca. 35 km · ~",
+  "note": "Am Riff 3, 04651 Bad Lausick · eigener Kleinkindbereich (33 °C), Babyschwimmen · ca. 35 km",
   "checked_at": "2026-10-12",
   "status": "aktiv"
  },
@@ -939,7 +939,7 @@
   "age_max": null,
   "url": null,
   "beleg": "mid",
-  "note": "Wurzen · Schwimmhalle, ab 0 Jahren · ~",
+  "note": "Wurzen · Schwimmhalle, ab 0 Jahren",
   "checked_at": "2026-10-12",
   "status": "aktiv"
  },
@@ -955,7 +955,7 @@
   "age_max": 4.0,
   "url": null,
   "beleg": "mid",
-  "note": "Halle (Saale) · Spaßbad, 0–4 Jahre laut Portal · ~",
+  "note": "Halle (Saale) · Spaßbad, 0–4 Jahre laut Portal",
   "checked_at": "2026-10-12",
   "status": "aktiv"
  },
@@ -1467,7 +1467,7 @@
   "age_max": null,
   "url": null,
   "beleg": "ok",
-  "note": "Johannisplatz 10, 09111 Chemnitz · Familien- und Kindercafé, Spielbereich, Krabbelecke Babys · ✓ (emmas-cafe.com)",
+  "note": "Johannisplatz 10, 09111 Chemnitz · Familien- und Kindercafé, Spielbereich, Krabbelecke Babys",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1483,7 +1483,7 @@
   "age_max": 4.0,
   "url": null,
   "beleg": "ok",
-  "note": "Reichsstraße 58 (Kaßberg) · Indoor, eigener Bereich 0–4 J. (80 m²), sonntags „Minijumpy\" 9–10 Uhr · ✓ (jumpnplay.de)",
+  "note": "Reichsstraße 58 (Kaßberg) · Indoor, eigener Bereich 0–4 J. (80 m²), sonntags „Minijumpy\" 9–10 Uhr",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1499,7 +1499,7 @@
   "age_max": null,
   "url": null,
   "beleg": "low",
-  "note": "Ringstr. 17b · Aktualität unklar, Verzeichnis zeigte „geschlossen\" · ?",
+  "note": "Ringstr. 17b · Aktualität unklar, Verzeichnis zeigte „geschlossen\"",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1515,7 +1515,7 @@
   "age_max": null,
   "url": null,
   "beleg": "mid",
-  "note": "Dänkritzer Weg 2, 3.500 m² · ~ (ca. 40 km, außerhalb 30-km-Umland)",
+  "note": "Dänkritzer Weg 2, 3.500 m²",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1531,7 +1531,7 @@
   "age_max": null,
   "url": null,
   "beleg": "ok",
-  "note": "Tschaikowskistr. 9 · ✓",
+  "note": "Tschaikowskistr. 9",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1547,7 +1547,7 @@
   "age_max": null,
   "url": null,
   "beleg": "ok",
-  "note": "Hilbersdorfer Str. 21 · ✓",
+  "note": "Hilbersdorfer Str. 21",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1563,7 +1563,7 @@
   "age_max": null,
   "url": null,
   "beleg": "ok",
-  "note": "Irkutsker Str. 15 · ✓/~",
+  "note": "Irkutsker Str. 15",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1579,7 +1579,7 @@
   "age_max": null,
   "url": null,
   "beleg": "ok",
-  "note": "Paul-Arnold-Str. 1 · ✓",
+  "note": "Paul-Arnold-Str. 1",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1595,7 +1595,7 @@
   "age_max": null,
   "url": null,
   "beleg": "ok",
-  "note": "Usti nad Labem 119 · ✓",
+  "note": "Usti nad Labem 119",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1611,7 +1611,7 @@
   "age_max": null,
   "url": null,
   "beleg": "ok",
-  "note": "Yorckstr. 48 · ✓",
+  "note": "Yorckstr. 48",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1627,7 +1627,7 @@
   "age_max": null,
   "url": null,
   "beleg": "ok",
-  "note": "Bernhardstr. 4 · ✓",
+  "note": "Bernhardstr. 4",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1643,7 +1643,7 @@
   "age_max": null,
   "url": null,
   "beleg": "ok",
-  "note": "Robert-Siewert-Str. 68/70 · ✓ (Name nur als englische Übersetzung belegt)",
+  "note": "Robert-Siewert-Str. 68/70",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1659,7 +1659,7 @@
   "age_max": null,
   "url": null,
   "beleg": "mid",
-  "note": "Adresse nicht belegt · ~ (nicht verifiziert)",
+  "note": "Adresse nicht belegt",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1675,7 +1675,7 @@
   "age_max": null,
   "url": null,
   "beleg": "mid",
-  "note": "Moritzstr. 20 · Atrium gratis · ~",
+  "note": "Moritzstr. 20 · Atrium gratis",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1691,7 +1691,7 @@
   "age_max": null,
   "url": null,
   "beleg": "ok",
-  "note": "Familientage, Mitmach-Basteln (für Kleinkinder eingeschränkt) · ✓ Familientage",
+  "note": "Familientage, Mitmach-Basteln (für Kleinkinder eingeschränkt)",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1707,7 +1707,7 @@
   "age_max": null,
   "url": null,
   "beleg": "mid",
-  "note": "Frankenberger Str. 172 · Saison bis 2.11.2026, dann Winterpause · ~",
+  "note": "Frankenberger Str. 172 · Saison bis 2.11.2026, dann Winterpause",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1723,7 +1723,7 @@
   "age_max": null,
   "url": null,
   "beleg": "ok",
-  "note": "Vorlesen für Kinder · ✓ (Kleinkinderbereich unbelegt)",
+  "note": "Vorlesen für Kinder",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1739,7 +1739,7 @@
   "age_max": null,
   "url": null,
   "beleg": "mid",
-  "note": "Hohenstein-Ernstthal · Babybecken, Eltern-Kind-Bereich · ~",
+  "note": "Hohenstein-Ernstthal · Babybecken, Eltern-Kind-Bereich",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1755,7 +1755,7 @@
   "age_max": null,
   "url": null,
   "beleg": "low",
-  "note": "Adresse widersprüchlich, Kleinkindbereich unbelegt · ?",
+  "note": "Adresse widersprüchlich, Kleinkindbereich unbelegt",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1771,7 +1771,7 @@
   "age_max": null,
   "url": null,
   "beleg": "ok",
-  "note": "Nevoigtstr. 18 · Streichelzoo, Erlebnisbauernhof · ✓ (tierpark-chemnitz.de)",
+  "note": "Nevoigtstr. 18 · Streichelzoo, Erlebnisbauernhof",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1787,7 +1787,7 @@
   "age_max": null,
   "url": null,
   "beleg": "ok",
-  "note": "Thomas-Müntzer-Höhe 13 · Streichelzoo laut Verzeichnis · ✓/~",
+  "note": "Thomas-Müntzer-Höhe 13 · Streichelzoo laut Verzeichnis",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1803,7 +1803,7 @@
   "age_max": null,
   "url": null,
   "beleg": "mid",
-  "note": "Tierparkstr. 1 · veraltete Angaben · ~",
+  "note": "Tierparkstr. 1 · veraltete Angaben",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },
@@ -1819,7 +1819,7 @@
   "age_max": null,
   "url": null,
   "beleg": "mid",
-  "note": "Rathausplatz 4a · ~",
+  "note": "Rathausplatz 4a",
   "checked_at": "2026-10-31",
   "status": "aktiv"
  },

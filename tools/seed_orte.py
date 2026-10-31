@@ -94,7 +94,7 @@ def level(rest: str) -> str:
 def clean(rest: str) -> str:
     t = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", rest)
     t = re.sub(r"\*\*(✓/~|✓|~|\?)\*\*", "", t)
-    t = re.sub(r"\s*·\s*(✓/~|✓|~|\?)\b.*$", "", t)
+    t = re.sub(r"\s*·\s*(?:✓/~|✓|~|\?)(?=\s|\(|$).*$", "", t)
     t = re.sub(r"\*\*|\*", "", t)
     t = re.sub(r"^\s*[–-]\s*", "", t)
     return re.sub(r"\s+", " ", t).strip(" ·")

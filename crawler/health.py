@@ -59,7 +59,7 @@ def evaluate(conn, cfg: dict, now: datetime | None = None) -> list[dict]:
 
         if last is None:
             if not reasons:
-                out.append(_pack(src, "offen", ["noch keine Messung – wird beim nächsten Aktualisieren erfasst"], last, chk, history))
+                out.append(_pack(src, "offen", ["noch keine Messung"], last, chk, history))
                 continue
         else:
             found = last["found"] or 0
