@@ -128,6 +128,9 @@ def is_future(ev: dict) -> bool:
         return True
     midnight = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
     try:
-        return datetime.fromisoformat(ref) >= midnight
+        d = datetime.fromisoformat(ref)
     except ValueError:
         return True
+    if d.tzinfo:                        # Datum mit Zeitzone (z. B. +02:00) -> lokale Zeit ohne Zone
+        d = d.replace(tzinfo=None)
+    return d >= midnight

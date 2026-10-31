@@ -239,28 +239,40 @@ def _crawl():
             kept = past = radius = nodate = 0
             fam_default = src.get("family_default", 0.0)
             city = src.get("city")
+            bad = 0
             for ev in raw:
-                if not ev.get("start_at"):               # ohne Datum = keine Veranstaltung
-                    nodate += 1
-                    undated_rows.append({"source_id": src["id"], "title": ev.get("title"),
-                                         "url": ev.get("source_url")})
-                    continue
-                if not pipeline.is_future(ev):           # vergangen
-                    past += 1
-                    continue
-                ev["source_family_default"] = fam_default
-                ev["source_city"] = city
-                ev["source_region"] = src.get("region", "leipzig")
-                ev["source_age_default"] = src.get("age_default")
-                enriched = pipeline.enrich(ev)
-                if enriched is None:                     # ausserhalb 60 km
-                    radius += 1
-                    continue
-                seen_ids.setdefault(src["id"], {})[enriched["id"]] = enriched
-                if src.get("check"):                     # nur Gegenprobe: nicht in die DB
-                    continue
-                store.upsert_event(conn, enriched)
-                kept += 1
+                try:
+                    for k in ("start_at", "end_at"):     # Zeitzonen-Zusatz (+02:00) abschneiden
+                        if ev.get(k) and len(ev[k]) > 19:
+                            ev[k] = ev[k][:19]
+                    if not ev.get("start_at"):           # ohne Datum = keine Veranstaltung
+                        nodate += 1
+                        undated_rows.append({"source_id": src["id"], "title": ev.get("title"),
+                                             "url": ev.get("source_url")})
+                        continue
+                    if not pipeline.is_future(ev):       # vergangen
+                        past += 1
+                        continue
+                    ev["source_family_default"] = fam_default
+                    ev["source_city"] = city
+                    ev["source_region"] = src.get("region", "leipzig")
+                    ev["source_age_default"] = src.get("age_default")
+                    enriched = pipeline.enrich(ev)
+                    if enriched is None:                 # ausserhalb aller Regionen
+                        radius += 1
+                        continue
+                    seen_ids.setdefault(src["id"], {})[enriched["id"]] = enriched
+                    if src.get("check"):                 # nur Gegenprobe: nicht in die DB
+                        continue
+                    store.upsert_event(conn, enriched)
+                    kept += 1
+                except Exception as exc:                 # ein kaputter Eintrag stoppt nicht den Crawl
+                    bad += 1
+                    if bad == 1:
+                        print(f"    [error] Eintrag übersprungen ({src['id']}): {exc!r}")
+            if bad:
+                meas["error_sample"] = meas.get("error_sample") or f"{bad} Einträge nicht verarbeitbar"
+                meas["errors"] = (meas.get("errors") or 0) + bad
             total_raw += len(raw)
             total_kept += kept
             report_rows.append({"source_id": src["id"], "raw": len(raw), "kept": kept,
@@ -302,6 +314,12 @@ def _crawl():
         today = date.today().isoformat()
         n_arch = store.archive_past(conn, today, run_at)
         print(f"Archiviert (vergangen): {n_arch}")
+        # Altbestand ohne Region (Termine, die in diesem Lauf nicht neu geliefert wurden) nachtragen
+        from crawler import geo as _geo
+        for r_ in conn.execute("SELECT id, lat, lon FROM events WHERE region IS NULL").fetchall():
+            coord = (r_["lat"], r_["lon"]) if r_["lat"] and r_["lon"] else None
+            reg, _d = _geo.region_of(coord, default="leipzig")
+            conn.execute("UPDATE events SET region=? WHERE id=?", (reg or "leipzig", r_["id"]))
 
         ev_n, vn_n, by_src = store.stats(conn)
         store.record_runs(conn, run_at, report_rows)

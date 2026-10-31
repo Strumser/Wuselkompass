@@ -40,7 +40,7 @@ def scope_map() -> dict:
 # Spalten der Event-CSV: (DB-Feld, Überschrift) – bewusst menschenlesbar sortiert.
 _EVENT_COLS = [
     ("start_at", "Beginn"), ("end_at", "Ende"), ("title", "Titel"),
-    ("ort", "Ort"), ("stadtteil", "Stadtteil"), ("venue_name", "Veranstaltungsort"),
+    ("region", "Region"), ("ort", "Ort"), ("stadtteil", "Stadtteil"), ("venue_name", "Veranstaltungsort"),
     ("address", "Adresse"), ("price", "Preis"), ("distance_km", "km bis Leipzig"),
     ("age_min", "Alter ab"), ("age_max", "Alter bis"),
     ("source_id", "Quelle"), ("source_url", "Link"),

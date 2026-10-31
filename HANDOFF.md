@@ -145,3 +145,32 @@ mit ihrem alten START-Datum ganz oben. Fix in `webapp/serve.py` `render()`:
   2 Datenmodell Orte + wöchentliche Angebote, 3 Altersfilter (nur „ab 2 / ab 3 / ab 4"), 4 Reiter „Orte" + Wochenraster,
   5 Reparatur nur nach manueller Freigabe. Arbeit auf Branch `v2-orte-alter`.
 - **Chemnitz wird eigene Region** (Variante 3, ca. 69 km von Leipzig): eigene Quellen + Orte + Ortsfilter; Recherche-Agenten laufen.
+
+## v2 (Branch `v2-orte-alter`, 31.10.2026) – was gebaut wurde
+Dieser Abschnitt ersetzt ältere Aussagen weiter oben, wo sie widersprechen (z. B. „60-km-Radius", „Löschen").
+- **Archiv statt Löschen:** vergangene Termine bekommen `events.archived_at` (store.archive_past); alle Abfragen
+  filtern `archived_at IS NULL`. Ein erneut gesehener Termin wird wieder aktiv. Zweck: Gedächtnis für jährlich
+  wiederkehrende Veranstaltungen (spätere Prognose/Erinnerung).
+- **Regionen** (`geo.REGIONS`): Halle (25 km), Chemnitz (30 km), Leipzig (60 km); `events.region`, Region-Filter in
+  der App. `pipeline.enrich` prüft gegen die Regionen (statt fest 60 km um Leipzig); unbekannter Ort → Quellenregion,
+  behalten. Quellen, die Koordinaten liefern (`lat`/`lon`), werden direkt genutzt (`geo.nearest_name`).
+- **Orte** (`data/orte.json`, 115 Einträge: 91 aus Leipzig/Halle/Umland + 24 Chemnitz) und **wiederkehrende
+  Angebote** (`data/wochenangebote.json`, 33 Angebote, 71 Wochentags-Einträge): handgepflegte JSON-Dateien, beim
+  Crawl und beim Webapp-Start in die Tabellen `places`/`recurring` gespiegelt (`store.sync_places`). Herkunft/Erzeugung:
+  `tools/seed_orte.py` (einmalig; danach JSON von Hand pflegen). Regeln: weekly, biweekly (anchor), 1st3rd, last, monthly.
+  Ferien werden NICHT berechnet, nur als Hinweis („nicht in den Schulferien") angezeigt.
+- **Altersfilter:** „Mein Kind: 2/3/4 Jahre" + „nur mit Altersangabe". Unbekanntes Alter bleibt sichtbar („Alter offen").
+  Alterserkennung erweitert (`Alter: 5+`, `4+ Jahre`, `Alter: 3–6`) und kuratiertes Standardalter je Quelle
+  (`age_default`, z. B. FiZ 0–6). Events mit Altersangabe: nur ca. 9 % → Filter greift v. a. bei Orten/Wochenraster.
+- **Quellen-Gesundheit:** `source_runs` (Messwerte je Crawl: Treffer, Abrufe, Fehlercodes, Dauer, „nur hier"),
+  `source_checks` (Erreichbarkeitsprüfung), `crawler/health.py` (Ampel-Regeln: Rot < 40 % des üblichen Werts bzw.
+  0 Treffer/nicht erreichbar/>50 % Abruffehler; Gelb < 70 %, ≥30 % ohne Datum, ≥10 % Fehler, >3 Tage alt;
+  `allow_empty` für erwartet leere Quellen). Quellen-Reiter mit Ampel, Verlauf, Befund, Knöpfen „Erreichbarkeit jetzt
+  prüfen" und „abschalten/einschalten" (schreibt `sources.json`). Webapp bindet NUR an 127.0.0.1 (Host/Origin-Prüfung).
+- **Chemnitz** (eigene Region): `chemnitz-de` (Rubrik Kinder & Familie, Browser-UA!), `theater-chemnitz`
+  (Figurentheater + Stichwörter des Hauses, Monatslinks mit cHash), `czr-chemnitz` (GeoJSON, nur „Alle Events"),
+  `meinestadt-chemnitz` (Gegenprobe). Nicht gebaut: smac (steckt in chemnitz.de), Stadtbibliothek (keine Kinder-
+  Rubrik), Freie Presse (keine Kinder-Rubrik; JSON-LD, ?page=N, 15/Seite – nur falls „Alle Events" erweitert wird).
+- **Crawl:** parallel je Host (160 s kalt), Detailseiten 7 Tage im Cache.
+- **Bewusst NICHT umgesetzt (Nutzerentscheidung):** Reparatur-Workflow (Schritt 9), Concierge/Eingangskorb (Schritt 10).
+  Bei roter Ampel: Nutzer bittet Claude um Ursachensuche.
