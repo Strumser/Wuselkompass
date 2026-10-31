@@ -216,3 +216,15 @@ def is_known_place(name: str | None) -> bool:
         return False
     n = name.lower().split("(")[0].strip()
     return n in GAZETTEER or name.lower().strip() in GAZETTEER
+
+
+def nearest_name(coord, max_km: float = 8.0) -> str | None:
+    """Anzeigename des nächstgelegenen Orts aus dem Gazetteer (für Quellen, die nur Koordinaten liefern)."""
+    if not coord:
+        return None
+    best, bd = None, max_km
+    for name, c in GAZETTEER.items():
+        d = haversine(c, coord)
+        if d < bd:
+            best, bd = name, d
+    return DISPLAY.get(best, best.title()) if best else None

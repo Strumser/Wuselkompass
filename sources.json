@@ -210,7 +210,11 @@
       "base": "https://www.muetterzentrum-leipzig.de",
       "note": "FiZ-Netz, 0-6 Krabbelgruppen",
       "family_default": 0.7,
-      "city": "Leipzig"
+      "city": "Leipzig",
+      "age_default": [
+        0,
+        6
+      ]
     },
     {
       "id": "lipzkidz",
@@ -632,6 +636,46 @@
       "url": "https://www.l-iz.de/veranstaltungen/tipp-familie",
       "note": "TODO: redaktionell; Feed ohne Event-Datum -> LLM/Detail-Analyse nötig",
       "city": "Leipzig"
+    },
+    {
+      "id": "chemnitz-de",
+      "type": "chemnitz_de",
+      "active": true,
+      "url": "https://www.chemnitz.de/de/aktuell/veranstaltungen",
+      "ua": "browser",
+      "region": "chemnitz",
+      "city": "Chemnitz",
+      "pages": 20,
+      "note": "Stadt Chemnitz, Rubrik „Kinder und Familie“ (Solr-Filter, 20 Seiten); Browser-UA nötig (EventBot → 403)"
+    },
+    {
+      "id": "theater-chemnitz",
+      "type": "theater_chemnitz",
+      "active": true,
+      "url": "https://www.theater-chemnitz.de/spielplan",
+      "region": "chemnitz",
+      "city": "Chemnitz",
+      "note": "Spielplan: Sparte Figurentheater + Stichwörter des Hauses (Kinder, Familie, Märchen, Baby); Monatslinks mit cHash"
+    },
+    {
+      "id": "czr-chemnitz",
+      "type": "czr",
+      "active": true,
+      "url": "https://chemnitz-zwickau-region.de/veranstaltungen/",
+      "region": "chemnitz",
+      "scope": "general",
+      "note": "Tourismusregion Chemnitz-Zwickau: GeoJSON mit Koordinaten (ca. 480 Termine, ohne Kategorie) → nur „Alle Events“, Umland 30 km um Chemnitz"
+    },
+    {
+      "id": "meinestadt-chemnitz",
+      "type": "jsonld",
+      "active": true,
+      "check": true,
+      "gegenprobe": true,
+      "url": "https://veranstaltungen.meinestadt.de/chemnitz/kinderveranstaltungen/alle",
+      "region": "chemnitz",
+      "city": "Chemnitz",
+      "note": "Gegenprobe (nicht in der App): Kinderrubrik von meinestadt; Standard-UA nötig, Browser-UA → 403"
     }
   ],
   "venues_seed": [

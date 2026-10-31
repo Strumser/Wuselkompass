@@ -87,7 +87,8 @@ def classify_family(ev: dict) -> tuple[float, int | None, int | None, list[str]]
 
 def enrich(ev: dict) -> dict | None:
     """Ergänzt id, Geo, Region, Familien-Score. None = außerhalb jeder Region/verwerfen."""
-    coord = geo.locate(ev.get("address") or ev.get("venue_name"))
+    coord = (ev["lat"], ev["lon"]) if ev.get("lat") and ev.get("lon") \
+        else geo.locate(ev.get("address") or ev.get("venue_name"))
     # Region = Halle (25 km) / Chemnitz (30 km) / Leipzig (60 km); Ort unbekannt -> Quellenregion, behalten
     region, dist = geo.region_of(coord, default=ev.get("source_region") or "leipzig")
     if coord and region is None:
@@ -95,7 +96,8 @@ def enrich(ev: dict) -> dict | None:
 
     score, age_min, age_max, cats = classify_family(ev)
     loc_text = " ".join(str(ev.get(k) or "") for k in ("address", "venue_name", "title"))
-    ort = geo.locate_name(ev.get("address") or ev.get("venue_name")) or ev.get("source_city")
+    ort = (geo.locate_name(ev.get("address") or ev.get("venue_name"))
+           or (geo.nearest_name(coord) if ev.get("lat") else None) or ev.get("source_city"))
     stadtteil = geo.detect_stadtteil(loc_text) if ort == "Leipzig" else None
     now = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
     ev = dict(ev)

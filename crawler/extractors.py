@@ -383,6 +383,147 @@ def wp_page_list(source_id: str, api_url: str, page_url: str, venue: str,
     return out
 
 
+# ------------------------------------------------------------- chemnitz.de (TYPO3 + Solr)
+def _text_of(html_part: str) -> str:
+    t = re.sub(r"<svg.*?</svg>|<picture>.*?</picture>|<script.*?</script>", "", html_part, flags=re.S)
+    t = re.sub(r"<[^>]+>", " | ", t)
+    t = html.unescape(re.sub(r"\s+", " ", t))
+    return re.sub(r"(\|\s*)+", "| ", t).strip(" |")
+
+
+def chemnitz_de_events(source_id: str, ua=None, max_pages: int = 20,
+                       category: str = "Kinder und Familie") -> list[dict]:
+    """Veranstaltungskalender der Stadt Chemnitz (Rubrik „Kinder und Familie"), Seitenschaltung per Solr.
+    Der Server lehnt den Standard-Bot-UA mit 403 ab: in sources.json "ua":"browser" setzen."""
+    from urllib.parse import quote
+    base = "https://www.chemnitz.de"
+    first = f"{base}/de/aktuell/veranstaltungen?tx_solr%5Bfilter%5D%5B0%5D=category%3A{quote(category)}"
+    page1 = fetch.get(first, max_age=3 * 3600, ua=ua)
+    if not page1:
+        return []
+    last = max([int(x) for x in re.findall(r"tx_solr%5Bpage%5D=(\d+)", page1)] or [1])
+    out, seen = [], set()
+    for n in range(1, min(last, max_pages) + 1):
+        page = page1 if n == 1 else fetch.get(f"{first}&tx_solr%5Bpage%5D={n}", max_age=3 * 3600, ua=ua)
+        if not page:
+            continue
+        for href, block in re.findall(r'<a href="(/de/aktuell/veranstaltungen/details\?[^"]+)">(.*?)</a>', page, re.S):
+            t = _text_of(block)
+            tm = re.search(r'<span class="fw-bold[^"]*">\s*(.*?)\s*</span>', block, re.S)
+            title = html.unescape(re.sub(r"<[^>]+>", "", tm.group(1))).strip() if tm else None
+            dm = re.search(r"(\d{2})\.(\d{2})\.(\d{4})(?:\s+(\d{1,2}):(\d{2})\s*Uhr)?"
+                           r"(?:\s*-\s*(?:(\d{2})\.(\d{2})\.(\d{4}))?\s*(?:(\d{1,2}):(\d{2})\s*Uhr)?)?", t)
+            if not (title and dm):
+                continue
+            d, mo, y, h1, m1, d2, mo2, y2, h2, m2 = dm.groups()
+            start = f"{y}-{mo}-{d}T{int(h1 or 0):02d}:{int(m1 or 0):02d}:00"
+            end = None
+            if d2:
+                end = f"{y2}-{mo2}-{d2}T{int(h2 or 0):02d}:{int(m2 or 0):02d}:00"
+            elif h2:
+                end = f"{y}-{mo}-{d}T{int(h2):02d}:{int(m2 or 0):02d}:00"
+            after = [x.strip() for x in t[dm.end():].split("|") if x.strip()]
+            venue = after[0] if after else None
+            address = after[1] if len(after) > 1 else None
+            before = [x.strip() for x in t[:dm.start()].split("|") if x.strip()]
+            ti = before.index(title) if title in before else len(before)
+            cats = before[:ti]                                   # Rubriken stehen vor dem Titel
+            summary = before[ti + 1] if len(before) > ti + 1 else None   # Kurztext danach
+            url = base + html.unescape(href)
+            key = (title.lower(), start)
+            if key in seen:
+                continue
+            seen.add(key)
+            venue = re.sub(r"^Chemnitz,\s*", "", venue or "") or None
+            out.append({"source_id": source_id, "source_url": url, "title": title,
+                        "summary": summary, "start_at": start, "end_at": end,
+                        "venue_name": venue, "address": ", ".join(x for x in (venue, address) if x) or None,
+                        "price": None, "categories": ", ".join(cats)})
+    return out
+
+
+# ------------------------------------- chemnitz-zwickau-region.de (GeoJSON-Endpunkt)
+def czr_events(source_id: str, ua=None) -> list[dict]:
+    """Tourismusregion Chemnitz-Zwickau: /wp-json/czr-events/v1/points (GeoJSON, ~480 Termine mit
+    Koordinaten). Kein Ortsname und keine Kategorie – die Pipeline ordnet über die Koordinaten zu."""
+    text = fetch.get("https://chemnitz-zwickau-region.de/wp-json/czr-events/v1/points",
+                     max_age=3 * 3600, ua=ua)
+    if not text:
+        return []
+    try:
+        feats = json.loads(text).get("features", [])
+    except (json.JSONDecodeError, AttributeError):
+        return []
+    out = []
+    for f in feats:
+        pr = f.get("properties") or {}
+        coords = (f.get("geometry") or {}).get("coordinates") or []
+        dm = re.findall(r"(\d{2})\.(\d{2})\.(\d{4})(?:\s*·\s*(\d{1,2}):(\d{2}))?", pr.get("date") or "")
+        title = html.unescape(str(pr.get("title") or "")).strip().strip('"“”„')
+        if not (title and dm and len(coords) >= 2):
+            continue
+
+        def iso(t):
+            d, mo, y, h, mi = t
+            return f"{y}-{mo}-{d}T{int(h or 0):02d}:{int(mi or 0):02d}:00"
+        out.append({"source_id": source_id, "source_url": pr.get("url"), "title": title, "summary": None,
+                    "start_at": iso(dm[0]), "end_at": iso(dm[-1]) if len(dm) > 1 else None,
+                    "venue_name": None, "address": None, "price": None,
+                    "lat": float(coords[1]), "lon": float(coords[0])})
+    return out
+
+
+# ------------------------------------------------------------- Theater Chemnitz (TYPO3)
+_THEATER_FAMILY = re.compile(r"kinder|familie|märchen|baby|puppen|ab \d+ jahren|krabbel", re.I)
+
+
+def theater_chemnitz_events(source_id: str, ua=None, months_max: int = 9) -> list[dict]:
+    """Spielplan des Theaters Chemnitz. Familienrelevant: Sparte „Figurentheater" oder Stichworte
+    (Kinder, Familie, Märchen, Baby …). Monats-Links haben cHash und werden aus der Seite gelesen."""
+    base = "https://www.theater-chemnitz.de"
+    first = fetch.get(base + "/spielplan", max_age=3 * 3600, ua=ua)
+    if not first:
+        return []
+    month_links = []
+    for href in re.findall(r'href="(/spielplan\?[^"]*)"', first):
+        href = html.unescape(href)
+        if "month%5D=" in href and "type%5D=alle" in href and href not in month_links:
+            month_links.append(href)
+    pages = [first] + [fetch.get(base + h, max_age=3 * 3600, ua=ua) or "" for h in month_links[:months_max]]
+    out, seen = [], set()
+    for page in pages:
+        for sec in re.findall(r'<section class="cc_event">(.*?)</section>', page, re.S):
+            def g(cls):
+                m = re.search(r'<div class="cc_item cc_%s">\s*(.*?)\s*</div>' % cls, sec, re.S)
+                return html.unescape(re.sub(r"<[^>]+>", "", m.group(1))).strip() if m else None
+            t = re.search(r"<h2>(.*?)</h2>", sec, re.S)
+            title = html.unescape(re.sub(r"<[^>]+>", "", t.group(1))).strip() if t else None
+            sub = re.search(r"<h3>(.*?)</h3>", sec, re.S)
+            sub = html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", sub.group(1)))).strip() if sub else None
+            typ = re.search(r'<div class="cc_type">(.*?)</div>', sec, re.S)
+            typ = html.unescape(re.sub(r"<[^>]+>", "", typ.group(1))).strip() if typ else ""
+            d, tm, loc = g("date"), g("time"), g("loc")
+            href = re.search(r'href="(/spielplan/detailseite/[^"]+)"', sec)
+            dm = re.match(r"(\d{2})\.(\d{2})\.(\d{4})", d or "")
+            if not (title and dm):
+                continue
+            blob = f"{title} {sub or ''} {typ}"
+            if not (typ.lower() == "figurentheater" or _THEATER_FAMILY.search(blob)):
+                continue
+            hm = re.match(r"(\d{1,2})[.:](\d{2})", tm or "")
+            start = f"{dm.group(3)}-{dm.group(2)}-{dm.group(1)}T{int(hm.group(1)) if hm else 0:02d}:{int(hm.group(2)) if hm else 0:02d}:00"
+            url = base + href.group(1) if href else base + "/spielplan"
+            key = (url, start)
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append({"source_id": source_id, "source_url": url, "title": title, "summary": sub,
+                        "start_at": start, "end_at": None, "venue_name": loc,
+                        "address": f"{loc}, Chemnitz" if loc else "Chemnitz", "price": None,
+                        "categories": typ})
+    return out
+
+
 # --------------------------------------------- generisch: Listing -> Detail-JSON-LD
 def listing_detail_jsonld(source_id: str, listing_url: str, link_re: str,
                           base: str, limit: int = 40, ua=None) -> list[dict]:

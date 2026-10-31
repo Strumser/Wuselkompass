@@ -49,6 +49,15 @@ def collect(source: dict) -> list[dict]:
         return extractors.wp_page_list(sid, source["api"], source["url"],
                                        source["venue"], source["address"])
 
+    if typ == "chemnitz_de":
+        return extractors.chemnitz_de_events(sid, ua=ua, max_pages=source.get("pages", 20))
+
+    if typ == "czr":
+        return extractors.czr_events(sid, ua=ua)
+
+    if typ == "theater_chemnitz":
+        return extractors.theater_chemnitz_events(sid, ua=ua)
+
     if typ == "tdjw":
         return extractors.tdjw_events(sid, months=source.get("months", 6), ua=ua)
 
