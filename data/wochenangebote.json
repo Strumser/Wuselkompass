@@ -1,0 +1,850 @@
+[
+ {
+  "id": "W1",
+  "place_name": "Kawi Kids (Südvorstadt)",
+  "title": "Offenes Spielen",
+  "region": "leipzig",
+  "beleg": "ok",
+  "hinweis": "Do/So und Feiertage auch für 3–5-Jährige",
+  "slots": [
+   {
+    "days": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "von": "09:00",
+    "bis": "12:00",
+    "rule": "weekly",
+    "age_min": 0,
+    "age_max": 2
+   },
+   {
+    "days": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ],
+    "von": "15:00",
+    "bis": "18:00",
+    "rule": "weekly",
+    "age_min": 0,
+    "age_max": 2
+   },
+   {
+    "days": [
+     3,
+     6
+    ],
+    "von": "15:00",
+    "bis": "18:00",
+    "rule": "weekly",
+    "age_min": 3,
+    "age_max": 5
+   }
+  ],
+  "checked_at": "2026-10-12"
+ },
+ {
+  "id": "W2",
+  "place_name": "Kinderwelt Gohlis (Hummelbienchen)",
+  "title": "Spielzeiten (90 Min.)",
+  "region": "leipzig",
+  "beleg": "mid",
+  "age_min": 0.75,
+  "age_max": 4,
+  "slots": [
+   {
+    "days": [
+     3,
+     4
+    ],
+    "von": "10:00",
+    "bis": "11:30",
+    "rule": "weekly"
+   },
+   {
+    "days": [
+     3,
+     4
+    ],
+    "von": "15:30",
+    "bis": "17:00",
+    "rule": "weekly"
+   },
+   {
+    "days": [
+     5
+    ],
+    "von": "09:30",
+    "bis": "11:30",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W3",
+  "place_name": "Familienzentrum Tüpfelhausen (Leutzsch)",
+  "title": "Offenes Elterncafé",
+  "region": "leipzig",
+  "beleg": "ok",
+  "age_min": 0,
+  "age_max": 6,
+  "slots": [
+   {
+    "days": [
+     0,
+     1
+    ],
+    "von": "10:00",
+    "bis": "15:30",
+    "rule": "weekly"
+   },
+   {
+    "days": [
+     2,
+     3,
+     4
+    ],
+    "von": "10:00",
+    "bis": "18:00",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W4",
+  "place_name": "Familienzentrum GeyserHaus (Gohlis)",
+  "title": "Haus geöffnet (Krabbelstunde, Papa-Café, Familienfrühstück)",
+  "region": "leipzig",
+  "beleg": "mid",
+  "age_min": 0,
+  "age_max": 6,
+  "hinweis": "Zeiten der einzelnen Angebote nicht belegt, Stand 01/2023",
+  "slots": [
+   {
+    "days": [
+     0
+    ],
+    "von": "09:00",
+    "bis": "15:00",
+    "rule": "weekly"
+   },
+   {
+    "days": [
+     1
+    ],
+    "von": "09:00",
+    "bis": "17:30",
+    "rule": "weekly"
+   },
+   {
+    "days": [
+     2
+    ],
+    "von": "09:00",
+    "bis": "17:00",
+    "rule": "weekly"
+   },
+   {
+    "days": [
+     3
+    ],
+    "von": "09:00",
+    "bis": "14:00",
+    "rule": "weekly"
+   },
+   {
+    "days": [
+     4
+    ],
+    "von": "09:00",
+    "bis": "13:00",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12"
+ },
+ {
+  "id": "W5",
+  "place_name": "Familienzentrum Schönefeld (CVJM)",
+  "title": "Eltern-Kind-Gruppe",
+  "region": "leipzig",
+  "beleg": "ok",
+  "slots": [
+   {
+    "days": [
+     1
+    ],
+    "von": "09:00",
+    "bis": "10:00",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W8",
+  "place_name": "BWG Erlebnishaus (Halle)",
+  "title": "Offener Krabbeltreff",
+  "region": "halle",
+  "beleg": "mid",
+  "age_min": 0,
+  "age_max": 2,
+  "hinweis": "nicht in den Schulferien/an Feiertagen",
+  "slots": [
+   {
+    "days": [
+     0
+    ],
+    "von": "10:00",
+    "bis": "12:00",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12"
+ },
+ {
+  "id": "W9",
+  "place_name": "Familiencafé Völkchen (Halle)",
+  "title": "Offenes Familiencafé",
+  "region": "halle",
+  "beleg": "ok",
+  "age_min": 0,
+  "age_max": 3,
+  "slots": [
+   {
+    "days": [
+     1,
+     3
+    ],
+    "von": "09:30",
+    "bis": "12:00",
+    "rule": "weekly"
+   },
+   {
+    "days": [
+     2
+    ],
+    "von": "09:30",
+    "bis": "12:00",
+    "rule": "weekly"
+   },
+   {
+    "days": [
+     2
+    ],
+    "von": "14:00",
+    "bis": "17:00",
+    "rule": "weekly"
+   },
+   {
+    "days": [
+     4
+    ],
+    "von": "09:30",
+    "bis": "12:00",
+    "rule": "weekly"
+   },
+   {
+    "days": [
+     4
+    ],
+    "von": "14:00",
+    "bis": "17:00",
+    "rule": "1st3rd"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W10",
+  "place_name": "Familiencafé Völkchen (Halle)",
+  "title": "Krabbelcafé",
+  "region": "halle",
+  "beleg": "ok",
+  "age_min": 0,
+  "age_max": 1,
+  "slots": [
+   {
+    "days": [
+     2
+    ],
+    "von": "09:30",
+    "bis": "11:30",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W11",
+  "place_name": "Kinderschutzbund Halle",
+  "title": "Krabbelgruppe",
+  "region": "halle",
+  "beleg": "ok",
+  "age_min": 0,
+  "age_max": 2,
+  "slots": [
+   {
+    "days": [
+     1
+    ],
+    "von": "09:30",
+    "bis": "11:30",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W12",
+  "place_name": "Kinderschutzbund Halle",
+  "title": "Naturzeit",
+  "region": "halle",
+  "beleg": "ok",
+  "slots": [
+   {
+    "days": [
+     2
+    ],
+    "von": "09:00",
+    "bis": "11:00",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W13",
+  "place_name": "Kinderschutzbund Halle",
+  "title": "Familienfrühstück (Anmeldung)",
+  "region": "halle",
+  "beleg": "ok",
+  "hinweis": "Anmeldung nötig",
+  "slots": [
+   {
+    "days": [
+     4
+    ],
+    "von": "09:30",
+    "bis": "11:30",
+    "rule": "1st3rd"
+   }
+  ],
+  "checked_at": "2026-10-12"
+ },
+ {
+  "id": "W14",
+  "place_name": "Kinderschutzbund Halle",
+  "title": "Familiennachmittag / Eltern-Kind-Spieletreff",
+  "region": "halle",
+  "beleg": "ok",
+  "slots": [
+   {
+    "days": [
+     3
+    ],
+    "von": "15:00",
+    "bis": "17:30",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W15",
+  "place_name": "Franckesche Stiftungen Halle",
+  "title": "Offene Spielgruppe",
+  "region": "halle",
+  "beleg": "mid",
+  "age_min": 0,
+  "age_max": 3,
+  "hinweis": "Quellen widersprüchlich, Zeiten bitte prüfen",
+  "slots": [
+   {
+    "days": [
+     1
+    ],
+    "von": "14:00",
+    "bis": "17:00",
+    "rule": "weekly"
+   },
+   {
+    "days": [
+     2
+    ],
+    "von": "12:30",
+    "bis": "14:30",
+    "rule": "weekly"
+   },
+   {
+    "days": [
+     3
+    ],
+    "von": "10:00",
+    "bis": "12:00",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12"
+ },
+ {
+  "id": "W16",
+  "place_name": "IRIS e. V. (Halle, Schleiermacherstr. 39)",
+  "title": "Offene Krabbelgruppen",
+  "region": "halle",
+  "beleg": "mid",
+  "slots": [
+   {
+    "days": [
+     1,
+     3
+    ],
+    "von": "09:00",
+    "bis": "12:00",
+    "rule": "weekly",
+    "age_min": 0,
+    "age_max": 1.5
+   },
+   {
+    "days": [
+     4
+    ],
+    "von": "09:00",
+    "bis": "11:00",
+    "rule": "weekly",
+    "age_min": 1,
+    "age_max": 3
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W17",
+  "place_name": "Baby & Me (Halle, Schleiermacherstr. 15)",
+  "title": "Krabbel-/Spielgruppen",
+  "region": "halle",
+  "beleg": "mid",
+  "age_min": 0,
+  "age_max": 2,
+  "slots": [
+   {
+    "days": [
+     2,
+     3
+    ],
+    "von": "09:30",
+    "bis": "11:30",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W18",
+  "place_name": "Geburtshaus Lebenslicht (Halle)",
+  "title": "Offene Krabbelgruppe",
+  "region": "halle",
+  "beleg": "mid",
+  "age_min": 0,
+  "age_max": 1,
+  "slots": [
+   {
+    "days": [
+     2
+    ],
+    "von": "09:00",
+    "bis": "10:00",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W19",
+  "place_name": "eXxtra CVJM Halle",
+  "title": "Krabbelgruppe",
+  "region": "halle",
+  "beleg": "mid",
+  "age_min": 0,
+  "age_max": 2,
+  "slots": [
+   {
+    "days": [
+     1
+    ],
+    "von": "09:00",
+    "bis": "12:00",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W20",
+  "place_name": "Die Wasserflöhe (Halle)",
+  "title": "Babyschwimmen 0–2,5 J. / Eltern-Kind-Schwimmen 2,5–5 J.",
+  "region": "halle",
+  "beleg": "ok",
+  "age_min": 0,
+  "age_max": 5,
+  "hinweis": "Kurs mit 6–8 Einheiten, Anmeldung",
+  "slots": [
+   {
+    "days": [
+     2
+    ],
+    "von": "14:30",
+    "bis": "16:30",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12"
+ },
+ {
+  "id": "W21",
+  "place_name": "Landesmuseum für Vorgeschichte (Halle)",
+  "title": "Familiennachmittag (letzter Sonntag im Monat)",
+  "region": "halle",
+  "beleg": "mid",
+  "slots": [
+   {
+    "days": [
+     6
+    ],
+    "von": null,
+    "bis": null,
+    "rule": "last"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W22",
+  "place_name": "Bürger- und Vereinshaus Bad Dürrenberg",
+  "title": "Eltern-Kind-Gruppe (Frühe Hilfen), 14-tägig",
+  "region": "halle",
+  "beleg": "mid",
+  "age_min": 0,
+  "age_max": 3,
+  "slots": [
+   {
+    "days": [
+     3
+    ],
+    "von": "10:00",
+    "bis": "12:00",
+    "rule": "biweekly",
+    "anchor": "2026-08-13"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W23",
+  "place_name": "Norbertsaal Merseburg (St. Norbert)",
+  "title": "Krabbelgruppe",
+  "region": "halle",
+  "beleg": "mid",
+  "age_min": 0,
+  "age_max": 2,
+  "hinweis": "nicht in den Schulferien",
+  "slots": [
+   {
+    "days": [
+     1
+    ],
+    "von": "09:30",
+    "bis": "11:00",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12"
+ },
+ {
+  "id": "W24",
+  "place_name": "Ev. Kirche Mücheln-Langeneichstädt",
+  "title": "Krabbelgruppe",
+  "region": "halle",
+  "beleg": "mid",
+  "age_min": 0,
+  "age_max": 2,
+  "slots": [
+   {
+    "days": [
+     1
+    ],
+    "von": "09:30",
+    "bis": "11:00",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W25",
+  "place_name": "Querfurt (Kirchplan 2)",
+  "title": "SingKlangBabyZeit",
+  "region": "halle",
+  "beleg": "mid",
+  "age_min": 0,
+  "age_max": 1,
+  "slots": [
+   {
+    "days": [
+     3
+    ],
+    "von": "10:00",
+    "bis": null,
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W26a",
+  "place_name": "CVJM Bad Lauchstädt",
+  "title": "Krabbelgruppe",
+  "region": "halle",
+  "beleg": "mid",
+  "age_min": 0,
+  "age_max": 2,
+  "slots": [
+   {
+    "days": [
+     0
+    ],
+    "von": "09:30",
+    "bis": "11:00",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W26b",
+  "place_name": "CVJM Landsberg",
+  "title": "Krabbelgruppe",
+  "region": "halle",
+  "beleg": "mid",
+  "age_min": 0,
+  "age_max": 2,
+  "slots": [
+   {
+    "days": [
+     3
+    ],
+    "von": "09:30",
+    "bis": "11:00",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W26c",
+  "place_name": "CVJM Petersberg OT Teicha",
+  "title": "Krabbelgruppe",
+  "region": "halle",
+  "beleg": "mid",
+  "age_min": 0,
+  "age_max": 2,
+  "slots": [
+   {
+    "days": [
+     2
+    ],
+    "von": "09:30",
+    "bis": "11:00",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W26d",
+  "place_name": "CVJM Salzatal (Schochwitz)",
+  "title": "Krabbelgruppe",
+  "region": "halle",
+  "beleg": "mid",
+  "age_min": 0,
+  "age_max": 2,
+  "slots": [
+   {
+    "days": [
+     1
+    ],
+    "von": "09:30",
+    "bis": "11:00",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W27",
+  "place_name": "Wettin-Löbejün",
+  "title": "Eltern-Kind-Treff (monatlich, Termin erfragen)",
+  "region": "halle",
+  "beleg": "mid",
+  "age_min": 0,
+  "age_max": 3,
+  "slots": [
+   {
+    "days": [
+     1
+    ],
+    "von": "15:00",
+    "bis": "16:30",
+    "rule": "monthly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W28",
+  "place_name": "Gemeindehaus Lieskau (DLL)",
+  "title": "Krabbelgruppe",
+  "region": "halle",
+  "beleg": "mid",
+  "age_min": 0,
+  "age_max": 2,
+  "slots": [
+   {
+    "days": [
+     3
+    ],
+    "von": "10:00",
+    "bis": "11:00",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W29",
+  "place_name": "Kita Bärchen Eilenburg",
+  "title": "Offene Krabbelgruppe",
+  "region": "leipzig",
+  "beleg": "ok",
+  "age_min": 0,
+  "age_max": 1.5,
+  "hinweis": "Rhythmus widersprüchlich, Zeiten klären",
+  "slots": [
+   {
+    "days": [
+     0
+    ],
+    "von": "09:00",
+    "bis": "10:30",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12"
+ },
+ {
+  "id": "W30",
+  "place_name": "Familienzentrum Markkleeberg (Lichtblick)",
+  "title": "Offener Treff (0–7 J.) und Krabbelgruppe",
+  "region": "leipzig",
+  "beleg": "ok",
+  "slots": [
+   {
+    "days": [
+     3
+    ],
+    "von": "15:00",
+    "bis": "17:00",
+    "rule": "weekly",
+    "age_min": 0,
+    "age_max": 7
+   },
+   {
+    "days": [
+     2
+    ],
+    "von": "09:30",
+    "bis": null,
+    "rule": "weekly",
+    "age_min": 0,
+    "age_max": 2,
+    "hinweis": "Krabbelgruppe, Orangerie Gaschwitz"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W31",
+  "place_name": "Residenzschloss Altenburg",
+  "title": "Kartenmacherwerkstatt (Drucktag)",
+  "region": "leipzig",
+  "beleg": "ok",
+  "slots": [
+   {
+    "days": [
+     4
+    ],
+    "von": "14:00",
+    "bis": null,
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ },
+ {
+  "id": "W32",
+  "place_name": "Jump'n'Play Chemnitz (Kaßberg)",
+  "title": "MINIJUMPY (inkl. Tageskarte, ab 8 €)",
+  "region": "chemnitz",
+  "beleg": "ok",
+  "age_min": 0,
+  "age_max": 4,
+  "slots": [
+   {
+    "days": [
+     6
+    ],
+    "von": "09:00",
+    "bis": "10:00",
+    "rule": "weekly"
+   }
+  ],
+  "checked_at": "2026-10-12",
+  "hinweis": null
+ }
+]

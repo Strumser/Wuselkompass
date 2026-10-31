@@ -19,7 +19,8 @@
       "note": "Umland; eigene Termine + Gegenprobe",
       "family_default": 0.5,
       "city": "Halle (Saale)",
-      "gegenprobe": true
+      "gegenprobe": true,
+      "region": "halle"
     },
     {
       "id": "meinestadt-grimma",
@@ -72,7 +73,8 @@
       "note": "Umland; Seite aktuell ohne Kinderveranstaltungen (0 ist korrekt)",
       "family_default": 0.5,
       "city": "Torgau",
-      "gegenprobe": true
+      "gegenprobe": true,
+      "allow_empty": true
     },
     {
       "id": "meinestadt-merseburg",
