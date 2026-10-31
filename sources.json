@@ -275,45 +275,45 @@
     {
       "id": "leipzig-leben",
       "type": "rss",
-      "active": true,
+      "active": false,
       "url": "https://www.leipzig-leben.de/veranstaltungen/freizeit-ideen/kinder-familien/feed/",
-      "note": "Kinder & Familien Kategorie-RSS-Feed",
+      "note": "abgeschaltet 2026-10-10 (Nutzerentscheidung): Magazin-Feed, kaum aktuelle Termine",
       "family_default": 0.6,
       "city": "Leipzig"
     },
     {
       "id": "leipzig-leben-tanz-theater",
       "type": "rss",
-      "active": true,
+      "active": false,
       "url": "https://www.leipzig-leben.de/veranstaltungen/kultur/tanz-theater-performance/feed/",
-      "note": "Freigegebene Kategorie kultur/tanz-theater-performance, Familienfilter gelockert",
+      "note": "abgeschaltet 2026-10-10 (Nutzerentscheidung): Magazin-Feed, kaum aktuelle Termine",
       "family_default": 0.4,
       "city": "Leipzig"
     },
     {
       "id": "leipzig-leben-festivals",
       "type": "rss",
-      "active": true,
+      "active": false,
       "url": "https://www.leipzig-leben.de/veranstaltungen/kultur/festivals/feed/",
-      "note": "Freigegebene Kategorie kultur/festivals, Familienfilter gelockert",
+      "note": "abgeschaltet 2026-10-10 (Nutzerentscheidung): Magazin-Feed, kaum aktuelle Termine",
       "family_default": 0.4,
       "city": "Leipzig"
     },
     {
       "id": "leipzig-leben-kunst-ausstellungen",
       "type": "rss",
-      "active": true,
+      "active": false,
       "url": "https://www.leipzig-leben.de/veranstaltungen/kultur/kunst-ausstellungen/feed/",
-      "note": "Freigegebene Kategorie kultur/kunst-ausstellungen, Familienfilter gelockert",
+      "note": "abgeschaltet 2026-10-10 (Nutzerentscheidung): Magazin-Feed, kaum aktuelle Termine",
       "family_default": 0.4,
       "city": "Leipzig"
     },
     {
       "id": "leipzig-leben-gaming-adventure",
       "type": "rss",
-      "active": true,
+      "active": false,
       "url": "https://www.leipzig-leben.de/veranstaltungen/freizeit-ideen/gaming-adventure/feed/",
-      "note": "Freigegebene Kategorie freizeit-ideen/gaming-adventure, Familienfilter gelockert",
+      "note": "abgeschaltet 2026-10-10 (Nutzerentscheidung): Magazin-Feed, kaum aktuelle Termine",
       "family_default": 0.4,
       "city": "Leipzig"
     },
@@ -367,9 +367,9 @@
     {
       "id": "lichtblick-familien",
       "type": "auto",
-      "active": true,
+      "active": false,
       "url": "https://lichtblick-fuer-familien.de/fabimobil/veranstaltungen/",
-      "note": "Familienzentrum MKL/Borna",
+      "note": "abgeschaltet 2026-10-10 (Nutzerentscheidung): Termine nur als Freitext",
       "family_default": 0.7,
       "city": "Markkleeberg"
     },

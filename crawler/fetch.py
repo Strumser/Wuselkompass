@@ -4,6 +4,7 @@ from __future__ import annotations
 import gzip
 import hashlib
 import os
+import threading
 import time
 import urllib.request
 import urllib.error
@@ -15,6 +16,7 @@ UA = "EventBot/0.1 (+Familien-Events Leipzig; Kontakt: admin@example.org)"
 BROWSER_UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
               "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 _last_request = {}          # host -> timestamp (einfaches Rate-Limit)
+_lock = threading.Lock()    # Rate-Limit ist threadsicher (parallele Quellen)
 MIN_INTERVAL = 1.0          # Sekunden pro Host
 
 
@@ -24,10 +26,12 @@ def _host(url: str) -> str:
 
 def _throttle(url: str):
     h = _host(url)
-    dt = time.time() - _last_request.get(h, 0)
-    if dt < MIN_INTERVAL:
-        time.sleep(MIN_INTERVAL - dt)
-    _last_request[h] = time.time()
+    with _lock:      # Zeitslot reservieren; gewartet wird außerhalb des Locks
+        now = time.time()
+        wait = max(0.0, _last_request.get(h, 0) + MIN_INTERVAL - now)
+        _last_request[h] = now + wait
+    if wait:
+        time.sleep(wait)
 
 
 def get(url: str, timeout: int = 20, use_cache: bool = True,
@@ -69,6 +73,8 @@ def get(url: str, timeout: int = 20, use_cache: bool = True,
         return None
 
     if use_cache:
-        with open(path, "w", encoding="utf-8") as f:
+        tmp = f"{path}.{threading.get_ident()}.tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
             f.write(text)
+        os.replace(tmp, path)        # atomar: kein halb geschriebener Cache
     return text

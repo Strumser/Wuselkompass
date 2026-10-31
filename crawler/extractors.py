@@ -16,6 +16,9 @@ from datetime import datetime
 
 from . import fetch
 
+# Termin-Detailseiten ändern sich selten: 7 Tage im Cache (Listen bleiben bei 3–6 h).
+DETAIL_MAX_AGE = 7 * 24 * 3600
+
 EVENT_TYPES = {
     "event", "theaterevent", "childrensevent", "musicevent", "festival",
     "socialevent", "educationevent", "exhibitionevent", "screeningevent",
@@ -397,7 +400,7 @@ def listing_detail_jsonld(source_id: str, listing_url: str, link_re: str,
             links.append(full)
     out = []
     for url in links[:limit]:
-        detail = fetch.get(url, max_age=12 * 3600, ua=ua)
+        detail = fetch.get(url, max_age=DETAIL_MAX_AGE, ua=ua)
         if not detail:
             continue
         for ev in extract_jsonld(detail, source_id):
@@ -421,7 +424,7 @@ def leipziginfo_events(source_id: str, ua=None, limit: int = 50) -> list[dict]:
             links.append(m)
     out = []
     for path in links[:limit]:
-        d = fetch.get(base + path, max_age=12 * 3600, ua=ua)
+        d = fetch.get(base + path, max_age=DETAIL_MAX_AGE, ua=ua)
         if not d:
             continue
         name = re.search(r'itemprop="name"[^>]*>(.*?)<', d, re.S)

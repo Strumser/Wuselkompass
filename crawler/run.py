@@ -143,10 +143,49 @@ def _collect_auto(url: str, sid: str) -> list[dict]:
     return []
 
 
+def _host_key(src: dict) -> str:
+    """Webseite, die eine Quelle abruft – Quellen derselben Webseite laufen nacheinander."""
+    u = src.get("url") or src.get("base") or src.get("api") or src["id"]
+    return u.split("/")[2] if "://" in u else u
+
+
+def _collect_parallel(sources: list[dict], workers: int = 10) -> dict:
+    """Sammelt alle Quellen. Quellen verschiedener Webseiten laufen parallel, Quellen derselben
+    Webseite nacheinander (Pause pro Host bleibt). Liefert {source_id: (roh, fehler)}."""
+    from concurrent.futures import ThreadPoolExecutor
+    groups: dict[str, list[dict]] = {}
+    for src in sources:
+        groups.setdefault(_host_key(src), []).append(src)
+
+    def work(group):
+        out = {}
+        for src in group:
+            try:
+                out[src["id"]] = (collect(src), None)
+            except Exception as e:                       # eine Quelle darf nicht alles stoppen
+                out[src["id"]] = ([], e)
+        return out
+
+    results: dict = {}
+    with ThreadPoolExecutor(max_workers=min(workers, max(1, len(groups)))) as pool:
+        for part in pool.map(work, groups.values()):
+            results.update(part)
+    return results
+
+
 def _crawl():
     store.init_db()
     with open(os.path.join(ROOT, "sources.json"), encoding="utf-8") as f:
         cfg = json.load(f)
+
+    # Phase 1: alle aktiven Quellen parallel einsammeln (Netzwerk), Phase 2: der Reihe nach
+    # verarbeiten und speichern (gleiche Reihenfolge wie bisher: bei Dubletten gewinnt die letzte).
+    import time as _time
+    _t0 = _time.time()
+    active = [s_ for s_ in cfg["sources"] if s_.get("active", True)]
+    print(f"Sammle {len(active)} Quellen parallel …")
+    collected = _collect_parallel(active)
+    print(f"Sammeln fertig in {_time.time() - _t0:.0f} s.")
 
     total_raw = total_kept = 0
     report_rows = []
@@ -169,10 +208,9 @@ def _crawl():
             if not src.get("active", True):
                 continue
             print(f"[{src['id']}] ({src['type']}) …")
-            try:
-                raw = collect(src)
-            except Exception as e:                       # eine Quelle darf nicht alles stoppen
-                print(f"    [error] {e}")
+            raw, err = collected[src["id"]]
+            if err is not None:
+                print(f"    [error] {err}")
                 report_rows.append({"source_id": src["id"], "raw": 0, "kept": 0,
                                     "past": 0, "radius": 0, "nodate": 0})
                 continue
