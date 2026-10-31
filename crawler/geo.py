@@ -52,7 +52,83 @@ GAZETTEER = {
     "freyburg": (51.2220, 11.7780),
     "weißenfels": (51.2000, 11.9680),
     "markranstädt": (51.2960, 12.2230),
+    # --- Region Chemnitz (Näherungswerte, nur für Region/Radius) ---
+    "chemnitz": (50.8278, 12.9214),
+    "hohenstein-ernstthal": (50.7956, 12.7139),
+    "limbach-oberfrohna": (50.8644, 12.7683),
+    "burgstädt": (50.9150, 12.8150),
+    "mittweida": (50.9853, 12.9810),
+    "flöha": (50.8586, 13.0750),
+    "oederan": (50.8610, 13.2370),
+    "zschopau": (50.7500, 13.0700),
+    "augustusburg": (50.7961, 13.1117),
+    "glauchau": (50.8167, 12.5333),
+    "meerane": (50.8500, 12.4667),
+    "penig": (50.9347, 12.7003),
+    "frankenberg": (50.9167, 13.0333),
+    "lichtenau": (50.9300, 13.0600),
+    "thum": (50.6200, 12.9500),
+    "niederwiesa": (50.8700, 13.0000),
+    # --- weitere Orte aus den Dauer-Locations (Näherungswerte) ---
+    "döbeln": (51.1200, 13.1200),
+    "leisnig": (51.1597, 12.9242),
+    "mügeln": (51.2380, 13.0620),
+    "oschatz": (51.3000, 13.1167),
+    "schmölln": (50.9025, 12.3547),
+    "posterstein": (50.9570, 12.3740),
+    "ronneburg": (50.8500, 12.1833),
+    "meuselwitz": (51.0500, 12.3000),
+    "memleben": (51.2847, 11.4483),
+    "eckartsberga": (51.1333, 11.5500),
+    "landsberg": (51.4167, 12.1500),
+    "bad dürrenberg": (51.2970, 12.0680),
+    "querfurt": (51.3800, 11.6000),
+    "mücheln": (51.2833, 11.8000),
+    "wettin": (51.5833, 11.8167),
+    "bad düben": (51.5900, 12.5890),
+    "machern": (51.3600, 12.6000),
+    "naunhof": (51.2700, 12.5800),
+    "albrechtshain": (51.2750, 12.5900),
+    "günthersdorf": (51.3170, 12.1000),
+    "leuna": (51.3167, 12.0100),
+    "geithain": (51.0520, 12.6960),
+    "kohren-sahlis": (51.0100, 12.6700),
+    "frohburg": (51.0700, 12.5600),
+    "pegau": (51.1700, 12.2700),
+    "zwenkau": (51.2210, 12.3260),
+    "neukieritzsch": (51.1700, 12.4400),
+    "regis-breitingen": (51.1100, 12.4300),
+    "rötha": (51.1900, 12.4800),
+    "groitzsch": (51.1500, 12.2900),
+    "gaschwitz": (51.2300, 12.4000),
+    "trebsen": (51.2800, 12.7400),
+    "dahlen": (51.3000, 13.0200),
+    "wehlitz": (51.4000, 12.2300),
 }
+
+
+# Regionen: Zentrum + Radius in km. Ein Termin gehört zur Region, deren Zentrum ihm am nächsten ist
+# und deren Radius er einhält (Halle/Chemnitz vor Leipzig, damit „Halle" ein eigener Filter wird).
+REGIONS = {
+    "halle":   {"name": "Halle (Saale)", "center": (51.4820, 11.9700), "radius": 25.0},
+    "chemnitz": {"name": "Chemnitz",     "center": (50.8278, 12.9214), "radius": 30.0},
+    "leipzig": {"name": "Leipzig",       "center": (51.3397, 12.3731), "radius": 60.0},
+}
+REGION_ORDER = ["halle", "chemnitz", "leipzig"]      # Prüfreihenfolge
+
+
+def region_of(coord, default: str = "leipzig"):
+    """(Region, Distanz zum Zentrum dieser Region) für Koordinaten; None = außerhalb aller Regionen.
+    Ohne Koordinaten: `default` (Ort unbekannt -> behalten wie bisher)."""
+    if not coord:
+        return default, None
+    for key in REGION_ORDER:
+        r = REGIONS[key]
+        d = haversine(r["center"], coord)
+        if d <= r["radius"]:
+            return key, round(d, 1)
+    return None, None
+
 
 
 # Anzeigenamen für Orte (kanonisch, konsistent mit source "city")

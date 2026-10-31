@@ -54,7 +54,7 @@ def export_events(path: str = EVENTS_CSV) -> int:
     with sqlite3.connect(DB, timeout=5) as c:
         c.row_factory = sqlite3.Row
         rows = c.execute(
-            "SELECT * FROM events ORDER BY start_at, source_id").fetchall()
+            "SELECT * FROM events WHERE archived_at IS NULL ORDER BY start_at, source_id").fetchall()
     # utf-8-sig: Umlaute erscheinen in Numbers/Excel korrekt.
     with open(path, "w", encoding="utf-8-sig", newline="") as f:
         w = csv.writer(f)

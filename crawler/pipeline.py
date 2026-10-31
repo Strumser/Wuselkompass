@@ -21,6 +21,9 @@ NEGATIVE = ["ab 12", "ab 14", "ab 16", "ab 18", "erwachsene", "18+", "party",
             "techno", "poetry slam", "lesung für erwachsene"]
 
 AGE_PATTERNS = [
+    (r"alter:?\s*(\d+)\s*[-–]\s*(\d+)", "range"),          # "Alter: 3–6"
+    (r"alter:?\s*(\d+)\s*\+", "min"),                         # "Alter: 5+"
+    (r"(?<![\d.])(\d{1,2})\s*\+\s*(?:jahre|j\b)", "min"),     # "4+ Jahre"
     (r"(\d+)\s*bis\s*(\d+)\s*jahr", "range"),
     (r"(\d+)\s*[-–]\s*(\d+)\s*jahr", "range"),
     (r"ab\s*(\d+)\s*jahr", "min"),
@@ -72,6 +75,10 @@ def classify_family(ev: dict) -> tuple[float, int | None, int | None, list[str]]
         elif kind == "min_month":
             age_min = 0
         break
+    # kuratiertes Standardalter der Quelle (z. B. FiZ 0–6), nur wenn der Text nichts hergibt
+    dflt = ev.get("source_age_default")
+    if age_min is None and age_max is None and dflt:
+        age_min, age_max = dflt[0], dflt[1]
     # Kleinkind-Bonus, wenn Alter ins 0-6-Fenster passt
     if age_min is not None and age_min <= 6:
         score = min(1.0, score + 0.2)
@@ -79,12 +86,11 @@ def classify_family(ev: dict) -> tuple[float, int | None, int | None, list[str]]
 
 
 def enrich(ev: dict) -> dict | None:
-    """Ergänzt id, Geo, Distanz, Familien-Score. None = außerhalb Radius/verwerfen."""
+    """Ergänzt id, Geo, Region, Familien-Score. None = außerhalb jeder Region/verwerfen."""
     coord = geo.locate(ev.get("address") or ev.get("venue_name"))
-    dist = geo.distance_from_leipzig(coord)
-    # Wenn Ort bekannt UND außerhalb Radius -> verwerfen.
-    # Ort unbekannt (dist None) -> behalten, aber ungefiltert (Quelle ist regional).
-    if dist is not None and dist > RADIUS_KM:
+    # Region = Halle (25 km) / Chemnitz (30 km) / Leipzig (60 km); Ort unbekannt -> Quellenregion, behalten
+    region, dist = geo.region_of(coord, default=ev.get("source_region") or "leipzig")
+    if coord and region is None:
         return None
 
     score, age_min, age_max, cats = classify_family(ev)
@@ -99,6 +105,7 @@ def enrich(ev: dict) -> dict | None:
     ev["lat"] = coord[0] if coord else None
     ev["lon"] = coord[1] if coord else None
     ev["distance_km"] = dist
+    ev["region"] = region
     ev["family_score"] = score
     ev["age_min"] = age_min
     ev["age_max"] = age_max

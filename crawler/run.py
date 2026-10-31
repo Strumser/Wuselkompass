@@ -151,19 +151,23 @@ def _host_key(src: dict) -> str:
 
 def _collect_parallel(sources: list[dict], workers: int = 10) -> dict:
     """Sammelt alle Quellen. Quellen verschiedener Webseiten laufen parallel, Quellen derselben
-    Webseite nacheinander (Pause pro Host bleibt). Liefert {source_id: (roh, fehler)}."""
+    Webseite nacheinander (Pause pro Host bleibt). Liefert {source_id: (roh, fehler, sekunden)}."""
     from concurrent.futures import ThreadPoolExecutor
     groups: dict[str, list[dict]] = {}
     for src in sources:
         groups.setdefault(_host_key(src), []).append(src)
 
     def work(group):
+        import time as _t
         out = {}
         for src in group:
+            fetch.set_source(src["id"])
+            t0 = _t.time()
             try:
-                out[src["id"]] = (collect(src), None)
+                out[src["id"]] = (collect(src), None, _t.time() - t0)
             except Exception as e:                       # eine Quelle darf nicht alles stoppen
-                out[src["id"]] = ([], e)
+                out[src["id"]] = ([], e, _t.time() - t0)
+        fetch.set_source(None)
         return out
 
     results: dict = {}
@@ -175,6 +179,8 @@ def _collect_parallel(sources: list[dict], workers: int = 10) -> dict:
 
 def _crawl():
     store.init_db()
+    from datetime import datetime as _dtm
+    run_at = _dtm.now().strftime("%Y-%m-%dT%H:%M:%S")
     with open(os.path.join(ROOT, "sources.json"), encoding="utf-8") as f:
         cfg = json.load(f)
 
@@ -192,6 +198,8 @@ def _crawl():
     undated_rows = []
     seen_ids = {}      # source_id -> {event_id: enriched} (für die Gegenprobe)
     with store.connect() as conn:
+        orte, recurring = store.load_curated(ROOT)
+        store.sync_places(conn, orte, recurring)           # data/orte.json + wochenangebote.json
         # Dauer-Locations (venues) laden
         for v in cfg.get("venues_seed", []):
             coord = None
@@ -208,11 +216,16 @@ def _crawl():
             if not src.get("active", True):
                 continue
             print(f"[{src['id']}] ({src['type']}) …")
-            raw, err = collected[src["id"]]
+            raw, err, secs = collected[src["id"]]
+            fstat = fetch.pop_stats(src["id"])
+            meas = {"requests": fstat["requests"], "errors": fstat["errors"],
+                    "error_codes": fstat["codes"], "error_sample": fstat["sample"],
+                    "seconds": round(secs, 1)}
             if err is not None:
                 print(f"    [error] {err}")
+                meas["error_sample"] = meas["error_sample"] or f"Fehler: {err}"
                 report_rows.append({"source_id": src["id"], "raw": 0, "kept": 0,
-                                    "past": 0, "radius": 0, "nodate": 0})
+                                    "past": 0, "radius": 0, "nodate": 0, **meas})
                 continue
             kept = past = radius = nodate = 0
             fam_default = src.get("family_default", 0.0)
@@ -228,6 +241,8 @@ def _crawl():
                     continue
                 ev["source_family_default"] = fam_default
                 ev["source_city"] = city
+                ev["source_region"] = src.get("region", "leipzig")
+                ev["source_age_default"] = src.get("age_default")
                 enriched = pipeline.enrich(ev)
                 if enriched is None:                     # ausserhalb 60 km
                     radius += 1
@@ -241,7 +256,7 @@ def _crawl():
             total_kept += kept
             report_rows.append({"source_id": src["id"], "raw": len(raw), "kept": kept,
                                 "past": past, "radius": radius,
-                                "nodate": nodate})
+                                "nodate": nodate, **meas})
             print(f"    roh: {len(raw):4d} | uebernommen: {kept:4d}")
 
         # Gegenprobe: Welche Termine einer Vergleichsquelle (z. B. meinestadt) kennen wir
@@ -263,14 +278,24 @@ def _crawl():
                                    "title": e.get("title"), "venue": e.get("venue_name"),
                                    "url": e.get("source_url")})
 
-        # Vergangene Termine entfernen – erst löschen, wenn das ENDE vor heute liegt
-        # (mehrtägige Veranstaltungen bleiben, solange sie noch laufen).
+        # „nur hier"-Zahl je Quelle: Termine, die keine andere Quelle in diesem Lauf kennt
+        for row in report_rows:
+            mine = set(seen_ids.get(row["source_id"], {}))
+            others = set()
+            for sid, evs_ in seen_ids.items():
+                if sid != row["source_id"]:
+                    others |= set(evs_)
+            row["unique_n"] = len(mine - others)
+
+        # Vergangene Termine NICHT löschen, sondern archivieren (Gedächtnis für wiederkehrende
+        # Veranstaltungen). Archiviert wird, wenn das ENDE vor heute liegt (mehrtägige bleiben aktiv).
         from datetime import date
         today = date.today().isoformat()
-        conn.execute("DELETE FROM events WHERE start_at<>'' "
-                     "AND substr(COALESCE(NULLIF(end_at,''), start_at),1,10) < ?", (today,))
+        n_arch = store.archive_past(conn, today, run_at)
+        print(f"Archiviert (vergangen): {n_arch}")
 
         ev_n, vn_n, by_src = store.stats(conn)
+        store.record_runs(conn, run_at, report_rows)
 
     # Crawl-Bericht als CSV: finale DB-Zahl je Quelle (nach Dedup) ergänzen.
     in_db = {r["source_id"]: r["n"] for r in by_src}
