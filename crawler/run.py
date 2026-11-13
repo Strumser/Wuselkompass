@@ -17,12 +17,21 @@ from db import store                                      # noqa: E402
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+def collect(source: dict) -> list[dict]:
+    """Roh-Events einer Quelle; bei `detail_age: true` zusätzlich Detailseiten nach Altersangaben."""
+    evs = _collect_raw(source)
+    if source.get("detail_age") and evs:
+        ua = fetch.BROWSER_UA if source.get("ua") == "browser" else None
+        evs = extractors.add_detail_text(source["id"], evs, ua=ua)
+    return evs
+
+
 def base_of(url: str) -> str:
     parts = url.split("/")
     return "/".join(parts[:3])
 
 
-def collect(source: dict) -> list[dict]:
+def _collect_raw(source: dict) -> list[dict]:
     """Liefert Roh-Events je nach Quellen-Typ. 'auto' nutzt den Fingerprint."""
     typ = source["type"]
     sid = source["id"]
@@ -321,6 +330,15 @@ def _crawl():
             reg, _d = _geo.region_of(coord, default="leipzig")
             conn.execute("UPDATE events SET region=? WHERE id=?", (reg or "leipzig", r_["id"]))
 
+        # Bewertungen (data/bewertungen.json) spiegeln, Titel-Schlüssel nachtragen
+        store.sync_ratings(conn, store.load_ratings(ROOT))
+
+        # Quellenübergreifende Dubletten markieren (nichts wird gelöscht)
+        from crawler import dedupe as _dd
+        gen_ids = {x["id"] for x in cfg["sources"] if x.get("scope") == "general"}
+        n_dup, dup_pairs = _dd.run(conn, gen_ids)
+        print(f"Dubletten markiert: {n_dup}")
+
         ev_n, vn_n, by_src = store.stats(conn)
         store.record_runs(conn, run_at, report_rows)
 
@@ -334,6 +352,7 @@ def _crawl():
         _report.save_undated(undated_rows)
         _report.save_gegenprobe(gp_rows, gp_missing)
         _report.export_events()
+        _report.save_dubletten(dup_pairs)
     except Exception as e:
         print(f"    [warn] CSV-Export fehlgeschlagen: {e}")
 

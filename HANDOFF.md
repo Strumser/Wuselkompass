@@ -174,3 +174,29 @@ Dieser Abschnitt ersetzt ältere Aussagen weiter oben, wo sie widersprechen (z. 
 - **Crawl:** parallel je Host (160 s kalt), Detailseiten 7 Tage im Cache.
 - **Bewusst NICHT umgesetzt (Nutzerentscheidung):** Reparatur-Workflow (Schritt 9), Concierge/Eingangskorb (Schritt 10).
   Bei roter Ampel: Nutzer bittet Claude um Ursachensuche.
+
+## Alterserkennung + Dubletten (Branch `v2-orte-alter`, 01.11.2026)
+- `pipeline.extract_age`: Zahlenmuster (ab N Jahren, N–M Jahre, Monate, Zahlwörter, „Alter: 3–6"), Preis-Kontext
+  („Kinder bis 3 frei") wird ignoriert; Gruppenwörter: Baby = 0–1, Krabbel = 0–2, Kleinkind = ab 1, Vorschul/Kita = 3–6.
+- Extraktoren liefern `_fulltext` (Langtext, wird nicht gespeichert). `detail_age: true` in sources.json
+  (leipzig-de, leipzig-im*, urbanite) lädt Detailseiten nur für künftige Termine ohne Alter (7 Tage Cache).
+- `crawler/dedupe.py`: Tag + Region + Titelähnlichkeit ≥ 0,88 + Ort/Venue nicht widersprüchlich → `dup_of`/`also_in`
+  (nichts gelöscht, Alter wird übernommen). Kontrolle: `data/export/dubletten.csv`.
+- Messung: Altersabdeckung 12 % → 20 % (500 von 2489 sichtbaren Terminen); 251 Dubletten markiert.
+- Offen: czr-chemnitz, chemnitz-de, kreuzer-theater, leipzig-im-fuehrung haben 0 % Alter (Detail-Parser/`detail_age` prüfen);
+  dubletten.csv stichprobenartig auf Falschtreffer prüfen; Merge in main wartet auf Freigabe.
+
+## Bewertung durch Claude (13.11.2026) – steuert die Ansicht „Familie"
+- `data/bewertungen.json` (im Repo, Quelle der Wahrheit): je normalisiertem Titel `urteil` (passt | vielleicht | nein),
+  geschätztes Alter `ab`/`bis`, `grund`. Spiegelung in Tabelle `ratings`; `events.rkey` = Titel-Schlüssel (`store.rating_key`).
+- Familie = Urteil passt/vielleicht (aus JEDER Quelle, auch „Alle Events"-Quellen) + noch unbewertete Termine der
+  Familienquellen. „nein" nur unter „Alle Events". Altersfilter nutzt das geschätzte Alter, wenn der Termin keins nennt
+  (Karte: „≈ ab 3", Tooltip „von Claude geschätzt").
+- Ablauf in einer Sitzung: `python3 -m tools.bewerten offen 14` → Claude liest `data/export/zu_bewerten.json`, schreibt
+  Urteile als JSON → `python3 -m tools.bewerten import DATEI`. Weg 2 (automatisch per Claude-API beim Crawl) noch nicht gebaut.
+- Erster Durchgang: 904 Titel der nächsten 14 Tage (55 passt, 118 vielleicht, 731 nein). Familie pro Tag ~25–50 statt ~200–300.
+- Kriterium: passt = für 2–4-Jährige gemacht (Puppentheater 3+, Bilderbuchkino, Krabbel-/Spielgruppen, Laternenumzug);
+  vielleicht = Kleinkind kann gut mit (Märkte, Weihnachtsmärkte, Panorama) oder Grenzfall (ab 4/5, Babyangebote 0–2);
+  nein = Erwachsenenprogramm, ab 6, Kurse für Eltern.
+- Sortierung je Tag: „passt" zuerst, dann vielleicht/unbewertet, „nein" zuletzt (jeweils nach Uhrzeit).
+- Neu im Altersparser: „(3+)", „3plus".

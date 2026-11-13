@@ -104,6 +104,12 @@ def region_of_params(p) -> str:
 
 
 # ------------------------------------------------------------------ Termine
+# Alter für Filter: Angabe aus dem Termin, sonst die geschätzte aus der Bewertung
+_NO_AGE = "(age_min IS NULL AND age_max IS NULL)"
+_AGE_MIN = f"(CASE WHEN {_NO_AGE} THEN est_min ELSE age_min END)"
+_AGE_MAX = f"(CASE WHEN {_NO_AGE} THEN est_max ELSE age_max END)"
+
+
 def query_events(p) -> list[dict]:
     text = q(p, "q").strip()
     today = datetime.now().strftime("%Y-%m-%d")
@@ -115,12 +121,14 @@ def query_events(p) -> list[dict]:
     age, only = parse_age(p), q(p, "nur_alter") == "1"
     show_all = q(p, "ansicht") == "alle"
 
-    where, args = ["archived_at IS NULL"], []
+    where, args = ["archived_at IS NULL", "dup_of IS NULL"], []
     if not show_all:
-        gen = general_source_ids()
-        if gen:
-            where.append("source_id NOT IN (%s)" % ",".join("?" * len(gen)))
-            args += sorted(gen)
+        # Familie = Bewertung „passt"/„vielleicht" (aus jeder Quelle) + noch unbewertete
+        # Termine der Familienquellen. „nein" erscheint nur unter „Alle Events".
+        gen = sorted(general_source_ids()) or [""]
+        where.append("((source_id NOT IN (%s) AND verdict IS NULL) OR verdict IN ('passt','vielleicht'))"
+                     % ",".join("?" * len(gen)))
+        args += gen
     if region:
         where.append("region=?")
         args.append(region)
@@ -133,14 +141,15 @@ def query_events(p) -> list[dict]:
     if text:
         where.append("(LOWER(title) LIKE ? OR LOWER(summary) LIKE ?)")
         args += [f"%{text.lower()}%", f"%{text.lower()}%"]
-    a_parts, a_args = age_sql("age_min", "age_max", age, only)
+    a_parts, a_args = age_sql(_AGE_MIN, _AGE_MAX, age, only)
     where += a_parts
     args += a_args
     # aktiv am gewählten Tag: Start <= Tag <= Ende (Ende = end_at, sonst start_at).
     where.append("start_at<>'' AND substr(start_at,1,10) <= ? "
                  "AND substr(COALESCE(NULLIF(end_at,''), start_at),1,10) >= ?")
     args += [date_sel, date_sel]
-    sql = (f"SELECT * FROM events WHERE {' AND '.join(where)} "
+    sql = (f"SELECT events.*, verdict, reason, est_min, est_max FROM events "
+           f"LEFT JOIN ratings USING (rkey) WHERE {' AND '.join(where)} "
            f"ORDER BY start_at, family_score DESC LIMIT 1000")
     with connect() as c:
         return [dict(r) for r in c.execute(sql, args).fetchall()]
@@ -184,7 +193,7 @@ def recurring_on(day: date, region: str, age, only) -> list[dict]:
 
 
 def distinct_orte(region: str = "") -> list[tuple[str, int]]:
-    sql = "SELECT ort, COUNT(*) n FROM events WHERE ort IS NOT NULL AND archived_at IS NULL"
+    sql = "SELECT ort, COUNT(*) n FROM events WHERE ort IS NOT NULL AND archived_at IS NULL AND dup_of IS NULL"
     args = []
     if region:
         sql += " AND region=?"
@@ -199,7 +208,7 @@ def distinct_stadtteile(ort: str) -> list[tuple[str, int]]:
         return []
     with connect() as c:
         return [(r[0], r[1]) for r in c.execute(
-            "SELECT stadtteil, COUNT(*) n FROM events WHERE stadtteil IS NOT NULL AND archived_at IS NULL "
+            "SELECT stadtteil, COUNT(*) n FROM events WHERE stadtteil IS NOT NULL AND archived_at IS NULL AND dup_of IS NULL "
             "GROUP BY stadtteil ORDER BY stadtteil").fetchall()]
 
 
@@ -276,8 +285,12 @@ def render(p) -> str:
     starts = [e for e in evs if (e.get("start_at") or "")[:10] >= date_val]
     ongoing = [e for e in evs if (e.get("start_at") or "")[:10] < date_val]
 
+    # Bewertung „passt" zuerst, dann vielleicht/unbewertet, „nein" zuletzt (innerhalb stabil nach Zeit)
+    rank = {"passt": 0, "vielleicht": 1, None: 1, "nein": 2}
+    ordered = sorted(starts + ongoing, key=lambda e: rank.get(e.get("verdict"), 1))
+
     cards = []
-    for e in starts + ongoing:
+    for e in ordered:
         is_ongoing = (e.get("start_at") or "")[:10] < date_val
         if is_ongoing and e.get("end_at"):
             ed = day_chip(e.get("end_at"))       # „läuft noch bis …": Chip zeigt das ENDE
@@ -299,7 +312,17 @@ def render(p) -> str:
             parts.append("kostenlos")
         meta = " · ".join(html.escape(x) for x in parts)
         known = e.get("age_min") is not None or e.get("age_max") is not None
-        pill = (f'<span class="pill {"" if known else "pill-off"}">{html.escape(age_text(e.get("age_min"), e.get("age_max")))}</span>')
+        est = not known and (e.get("est_min") is not None or e.get("est_max") is not None)
+        if est:
+            pill = f'<span class="pill pill-est" title="von Claude geschätzt">≈ {html.escape(age_text(e["est_min"], e["est_max"]))}</span>'
+        else:
+            pill = (f'<span class="pill {"" if known else "pill-off"}">{html.escape(age_text(e.get("age_min"), e.get("age_max")))}</span>')
+        if e.get("verdict"):
+            vlabel = {"passt": "passt für 2–4", "vielleicht": "vielleicht", "nein": "eher nicht"}[e["verdict"]]
+            pill += (f' <span class="pill v-{e["verdict"]}" title="{html.escape(e.get("reason") or "")}">'
+                     f'{vlabel}</span>')
+            if e.get("reason"):
+                pill += f'<div class="v-reason">{html.escape(e["reason"])}</div>' 
         link = e.get("source_url") or ""
         host = link.split("/")[2].replace("www.", "") if "://" in link else (e.get("source_id") or "")
         title = html.escape(e.get("title") or "")
@@ -307,6 +330,8 @@ def render(p) -> str:
                       if link else title)
         source_html = (f'Quelle: <a href="{html.escape(link)}" target="_blank" rel="noopener" style="text-decoration:none;font-weight:700;">{html.escape(host)} ↗</a>'
                        if link else f'Quelle: {html.escape(host)}')
+        if e.get("also_in"):
+            source_html += f'<div style="font-size:11.5px;margin-top:2px;">auch bei: {html.escape(e["also_in"])}</div>'
         time_html = (f'<div style="font-size:12px;font-weight:700;color:#D9663B;margin-top:2px;">{html.escape(tm)}</div>'
                      if tm else "")
         cards.append(f"""
@@ -645,6 +670,9 @@ EXTRA_CSS = """
 .sr-chk{font-size:13px;color:#6B5F54;display:flex;align-items:center;gap:6px;white-space:nowrap}
 .pill{display:inline-block;font-size:11.5px;font-weight:800;padding:1px 8px;border-radius:999px;background:#E9F3E6;color:#2F7D3A;margin-left:6px;vertical-align:1px}
 .pill-off{background:#F0E9DF;color:#A99C8E}
+.pill-est{background:#FFF4D6;color:#9A7417}
+.v-passt{background:#2F7D3A;color:#fff}.v-vielleicht{background:#F3D9A4;color:#7A5410}.v-nein{background:#EADAD4;color:#8E5A4A}
+.v-reason{font-size:12.5px;color:#9A8B7D;margin-top:3px;font-style:italic}
 .tag{display:inline-block;font-size:11.5px;font-weight:800;padding:1px 8px;border-radius:999px;border:1px solid;margin-left:4px;vertical-align:1px}
 .tag-ok{color:#2F7D3A;border-color:#2F9E44}.tag-mid{color:#9A6B12;border-color:#D9A441}.tag-low{color:#B0413F;border-color:#C2555C}
 .rec{margin:14px 32px 4px;border:1px solid #F0DFC8;background:#FFF8EC;border-radius:16px;padding:12px 16px}
@@ -781,6 +809,7 @@ def prepare_db():
         orte, rec = store.load_curated(ROOT)
         if orte or rec:
             store.sync_places(conn, orte, rec)
+        store.sync_ratings(conn, store.load_ratings(ROOT))
 
 
 if __name__ == "__main__":

@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sqlite3
 from contextlib import contextmanager
 
@@ -114,10 +115,21 @@ CREATE TABLE IF NOT EXISTS source_checks (
     note        TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_checks_src ON source_checks(source_id, checked_at);
+
+-- Bewertung „passt für 2–4 Jahre?" je Titel (Quelle der Wahrheit: data/bewertungen.json)
+CREATE TABLE IF NOT EXISTS ratings (
+    rkey      TEXT PRIMARY KEY,   -- normalisierter Titel (rating_key)
+    verdict   TEXT NOT NULL,      -- passt | vielleicht | nein
+    est_min   REAL,               -- geschätztes Alter (nur genutzt, wenn der Termin keins nennt)
+    est_max   REAL,
+    reason    TEXT,
+    rated_at  TEXT
+);
 """
 
 # Spalten, die nachträglich zu events kamen (Migration bestehender Datenbanken)
-_EVENT_EXTRA = [("archived_at", "TEXT"), ("region", "TEXT")]
+_EVENT_EXTRA = [("archived_at", "TEXT"), ("region", "TEXT"),
+                ("dup_of", "TEXT"), ("also_in", "TEXT"), ("rkey", "TEXT")]
 
 
 @contextmanager
@@ -204,6 +216,29 @@ def sync_places(conn, orte: list[dict], recurring: list[dict]):
                      slot.get("hinweis") or r.get("hinweis"), r.get("beleg"), r.get("checked_at")))
 
 
+def rating_key(title: str) -> str:
+    """Bewertungsschlüssel: Titel klein, nur Buchstaben/Ziffern, einfache Leerzeichen."""
+    return re.sub(r"\s+", " ", re.sub(r"[^\w]+", " ", (title or "").lower())).strip()
+
+
+def sync_ratings(conn, ratings: dict):
+    """data/bewertungen.json -> Tabelle ratings; fehlende events.rkey nachtragen."""
+    conn.execute("DELETE FROM ratings")
+    for k, r in ratings.items():
+        conn.execute("INSERT INTO ratings (rkey,verdict,est_min,est_max,reason,rated_at) VALUES (?,?,?,?,?,?)",
+                     (k, r["urteil"], r.get("ab"), r.get("bis"), r.get("grund"), r.get("am")))
+    for row in conn.execute("SELECT id, title FROM events WHERE rkey IS NULL").fetchall():
+        conn.execute("UPDATE events SET rkey=? WHERE id=?", (rating_key(row["title"]), row["id"]))
+
+
+def load_ratings(root: str) -> dict:
+    p = os.path.join(root, "data", "bewertungen.json")
+    if not os.path.exists(p):
+        return {}
+    with open(p, encoding="utf-8") as f:
+        return json.load(f)
+
+
 def load_curated(root: str):
     """Liest data/orte.json und data/wochenangebote.json (fehlende Dateien = leer)."""
     def rd(name):
@@ -234,9 +269,9 @@ def record_checks(conn, checked_at: str, rows: list[dict]):
 
 
 def stats(conn):
-    ev = conn.execute("SELECT COUNT(*) n FROM events WHERE archived_at IS NULL").fetchone()["n"]
+    ev = conn.execute("SELECT COUNT(*) n FROM events WHERE archived_at IS NULL AND dup_of IS NULL").fetchone()["n"]
     vn = conn.execute("SELECT COUNT(*) n FROM venues").fetchone()["n"]
     by_src = conn.execute(
-        "SELECT source_id, COUNT(*) n FROM events WHERE archived_at IS NULL "
+        "SELECT source_id, COUNT(*) n FROM events WHERE archived_at IS NULL AND dup_of IS NULL "
         "GROUP BY source_id ORDER BY n DESC").fetchall()
     return ev, vn, by_src

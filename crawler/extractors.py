@@ -126,6 +126,7 @@ def _norm_jsonld_event(e: dict, source_id: str) -> dict | None:
         "source_url": _get(e.get("url")),
         "title": html.unescape(str(title)).strip(),
         "summary": html.unescape(re.sub(r"<[^>]+>", "", str(desc)))[:400].strip() or None,
+        "_fulltext": html.unescape(re.sub(r"<[^>]+>", "", str(desc)))[:3000],
         "start_at": _parse_dt(e.get("startDate")),
         "end_at": _parse_dt(e.get("endDate")),
         "venue_name": html.unescape(str(venue_name)).strip() or None,
@@ -158,6 +159,7 @@ def wp_events_api(base_url: str, source_id: str, per_page: int = 50) -> list[dic
             "source_url": e.get("url"),
             "title": html.unescape(str(e.get("title", ""))).strip(),
             "summary": html.unescape(re.sub(r"<[^>]+>", "", e.get("excerpt") or e.get("description") or ""))[:400].strip() or None,
+            "_fulltext": html.unescape(re.sub(r"<[^>]+>", "", (e.get("description") or "") + " " + (e.get("excerpt") or "")))[:3000],
             "start_at": _parse_dt(e.get("start_date")),
             "end_at": _parse_dt(e.get("end_date")),
             "venue_name": venue.get("venue"),
@@ -261,6 +263,7 @@ def kreuzer_api(source_id: str, ressort: str = "kinder-familie", ua=None,
             if not title:
                 continue
             summary = html.unescape(re.sub(r"<[^>]+>", "", e.get("text") or ""))[:400].strip() or None
+            fulltext = html.unescape(re.sub(r"<[^>]+>", "", e.get("text") or ""))[:3000]
             for d in e.get("dates", []):
                 venue = (d.get("venue") or {}).get("name")
                 for ln in d.get("lines", []):
@@ -272,7 +275,7 @@ def kreuzer_api(source_id: str, ressort: str = "kinder-familie", ua=None,
                     out.append({
                         "source_id": source_id,
                         "source_url": f"https://kreuzer-leipzig.de/termine/{ressort}",
-                        "title": title, "summary": summary,
+                        "title": title, "summary": summary, "_fulltext": fulltext,
                         "start_at": start, "end_at": None,
                         "venue_name": venue, "address": venue, "price": None,
                     })
@@ -522,6 +525,50 @@ def theater_chemnitz_events(source_id: str, ua=None, months_max: int = 9) -> lis
                         "address": f"{loc}, Chemnitz" if loc else "Chemnitz", "price": None,
                         "categories": typ})
     return out
+
+
+# ------------------------------------------- Detailseiten-Text (für Altersempfehlungen)
+def detail_text(source_id: str, page: str) -> str:
+    """Beschreibungstext einer Termin-Detailseite (nur der Inhaltsbereich, ohne Navigation/Fußzeile).
+    leipzig-im: Kopf + Beschreibung; sonst <main>."""
+    t = re.sub(r"<script.*?</script>|<style.*?</style>|<noscript.*?</noscript>", "", page, flags=re.S)
+    parts = []
+    if source_id.startswith("leipzig-im"):
+        parts = re.findall(r"<section class=['\"]li-detail-(?:kopf|beschreibung)['\"].*?</section>", t, re.S)
+    elif source_id == "chemnitz-de":
+        # Inhalt beginnt bei „event-detail", endet vor „Mehr Informationen"/Fußzeile („Services")
+        m = re.search(r'class="event-detail news news-single"(.*?)(?:Mehr Informationen|>Services<|<footer)', t, re.S)
+        parts = [m.group(1)] if m else []
+    if not parts:
+        m = re.search(r"<main\b[^>]*>(.*?)</main>", t, re.S)
+        parts = [m.group(1)] if m else []
+    txt = " ".join(re.sub(r"<[^>]+>", " ", x) for x in parts)
+    return html.unescape(re.sub(r"\s+", " ", txt)).strip()[:4000]
+
+
+def add_detail_text(source_id: str, events: list[dict], ua=None, limit: int = 400) -> list[dict]:
+    """Lädt für Termine OHNE erkennbare Altersangabe die Detailseite (7 Tage im Cache) und hängt den
+    Inhaltstext als `_fulltext` an, damit die Pipeline dort nach einer Altersempfehlung suchen kann."""
+    from . import pipeline
+    n = 0
+    by_title = {}   # gleicher Titel (z. B. „Öffentliches Eislaufen") → Detailtext nur einmal laden
+    for ev in events:
+        if n >= limit:
+            break
+        if not ev.get("source_url") or not ev.get("start_at") or not pipeline.is_future(ev):
+            continue
+        short = " ".join(str(ev.get(k) or "") for k in ("title", "summary", "categories"))
+        if pipeline.extract_age(short, ev.get("_fulltext")) != (None, None):
+            continue
+        key = (ev.get("title") or "").strip().lower()
+        if key not in by_title:
+            page = fetch.get(ev["source_url"], max_age=DETAIL_MAX_AGE, ua=ua)
+            if not page:
+                continue
+            n += 1
+            by_title[key] = detail_text(source_id, page)
+        ev["_fulltext"] = ((ev.get("_fulltext") or "") + " " + by_title[key]).strip()
+    return events
 
 
 # --------------------------------------------- generisch: Listing -> Detail-JSON-LD

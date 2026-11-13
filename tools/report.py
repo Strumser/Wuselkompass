@@ -43,7 +43,7 @@ _EVENT_COLS = [
     ("region", "Region"), ("ort", "Ort"), ("stadtteil", "Stadtteil"), ("venue_name", "Veranstaltungsort"),
     ("address", "Adresse"), ("price", "Preis"), ("distance_km", "km bis Leipzig"),
     ("age_min", "Alter ab"), ("age_max", "Alter bis"),
-    ("source_id", "Quelle"), ("source_url", "Link"),
+    ("source_id", "Quelle"), ("also_in", "Auch bei"), ("source_url", "Link"),
 ]
 
 
@@ -54,7 +54,7 @@ def export_events(path: str = EVENTS_CSV) -> int:
     with sqlite3.connect(DB, timeout=5) as c:
         c.row_factory = sqlite3.Row
         rows = c.execute(
-            "SELECT * FROM events WHERE archived_at IS NULL ORDER BY start_at, source_id").fetchall()
+            "SELECT * FROM events WHERE archived_at IS NULL AND dup_of IS NULL ORDER BY start_at, source_id").fetchall()
     # utf-8-sig: Umlaute erscheinen in Numbers/Excel korrekt.
     with open(path, "w", encoding="utf-8-sig", newline="") as f:
         w = csv.writer(f)
@@ -116,6 +116,19 @@ def save_gegenprobe(rows: list[dict], missing: list[dict]) -> None:
         w.writerow(["Quelle", "Beginn", "Titel", "Veranstaltungsort", "Link"])
         for r in sorted(missing, key=lambda x: (x["source_id"], x["start_at"] or "")):
             w.writerow([r["source_id"], r["start_at"], r["title"], r["venue"], r["url"] or ""])
+
+
+def save_dubletten(pairs: list[dict]) -> int:
+    """Zur Kontrolle: welche Termine als Dublette ausgeblendet wurden (Haupteintrag <- Dublette)."""
+    os.makedirs(EXPORT_DIR, exist_ok=True)
+    with open(os.path.join(EXPORT_DIR, "dubletten.csv"), "w", encoding="utf-8-sig", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["Tag", "Region", "Quelle (bleibt)", "Titel (bleibt)", "Quelle (Dublette)",
+                    "Titel (Dublette)", "Ähnlichkeit"])
+        for p in sorted(pairs, key=lambda x: (x["day"], x["main_title"])):
+            w.writerow([p["day"], p["region"], p["main_src"], p["main_title"],
+                        p["dup_src"], p["dup_title"], p["ratio"]])
+    return len(pairs)
 
 
 def main():

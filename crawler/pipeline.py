@@ -20,16 +20,80 @@ MEDIUM = ["kinder", "familie", "familien", "märchen", "basteln", "mitmach",
 NEGATIVE = ["ab 12", "ab 14", "ab 16", "ab 18", "erwachsene", "18+", "party",
             "techno", "poetry slam", "lesung für erwachsene"]
 
-AGE_PATTERNS = [
-    (r"alter:?\s*(\d+)\s*[-–]\s*(\d+)", "range"),          # "Alter: 3–6"
-    (r"alter:?\s*(\d+)\s*\+", "min"),                         # "Alter: 5+"
-    (r"(?<![\d.])(\d{1,2})\s*\+\s*(?:jahre|j\b)", "min"),     # "4+ Jahre"
-    (r"(\d+)\s*bis\s*(\d+)\s*jahr", "range"),
-    (r"(\d+)\s*[-–]\s*(\d+)\s*jahr", "range"),
-    (r"ab\s*(\d+)\s*jahr", "min"),
-    (r"für\s*kinder\s*ab\s*(\d+)", "min"),
-    (r"ab\s*(\d+)\s*monat", "min_month"),
+# ------------------------------------------------------------------ Alterserkennung
+_NUMW = {"ein": 1, "eins": 1, "einem": 1, "einen": 1, "einer": 1, "zwei": 2, "drei": 3, "vier": 4,
+         "fünf": 5, "fuenf": 5, "sechs": 6, "sieben": 7, "acht": 8, "neun": 9, "zehn": 10,
+         "elf": 11, "zwölf": 12, "zwoelf": 12}
+_NUMW_RE = re.compile(r"\b(" + "|".join(sorted(_NUMW, key=len, reverse=True)) + r")\b"
+                      r"(?=\s*(?:bis\b|[-–]|jahr|j\b|monat))")
+_N = r"(\d+(?:[.,]\d+)?)"
+_YR = r"(?:jahre?n?|j\b\.?)"
+# (Muster, Art): range = von–bis, min = ab, max = bis, mrange/mmin = in Monaten
+_NUM_PATTERNS = [
+    (r"alter\w*:?\s*" + _N + r"\s*(?:bis|[-–])\s*" + _N, "range"),            # "Alter: 3–6"
+    (r"alter\w*:?\s*" + _N + r"\s*\+", "min"),                                # "Alter: 5+"
+    (_N + r"\s*(?:bis|[-–])\s*" + _N + r"\s*monat\w*", "mrange"),             # "6 bis 18 Monate"
+    (_N + r"\s*(?:bis|[-–])\s*" + _N + r"\s*" + _YR, "range"),                # "3 bis 6 Jahre", "3-6 J."
+    (r"kinder\w*\s*(?:ab|von)\s*" + _N + r"\s*(?:bis|[-–])\s*" + _N, "range"),
+    (r"\bab\s*" + _N + r"\s*monat\w*", "mmin"),                               # "ab 6 Monaten"
+    (r"\bab\s*" + _N + r"\s*" + _YR, "min"),                                  # "ab 3 Jahren", "ab 3 J."
+    (r"kinder\w*\s*ab\s*" + _N, "min"),                                       # "Kinder ab 5"
+    (r"(?<![\d.])(\d{1,2})\s*\+\s*" + _YR, "min"),                              # "4+ Jahre"
+    (r"\(\s*(\d{1,2})\s*\+\s*\)|(?<![\d.])(\d{1,2})\s*plus\b", "min"),            # "(3+)", "3plus"
 ]
+# Preis-Kontext („Kinder bis 3 Jahre frei") ist KEINE Altersempfehlung
+_PRICE_CTX = re.compile(r"frei|eintritt|kostenlos|ermäßig|zahlen|bezahlen|preis|€|euro|ticket|gratis", re.I)
+# Zielgruppenwörter (nur Titel/Kurztext/Rubrik, nicht im Langtext). Werte vom Nutzer festgelegt:
+# Baby = unter 1 Jahr, Kleinkind = ab 1 Jahr.
+_GROUPS = [
+    (r"\bbaby(?!lon)\w*(?!\s*!)", (0, 1)),
+    (r"\bkrabbel\w*", (0, 2)),
+    (r"\bkleinkind\w*", (1, None)),
+    (r"\bvorschul\w*|\bkita-?kinder\b", (3, 6)),
+]
+
+
+def _f(x: str) -> float:
+    return float(x.replace(",", "."))
+
+
+def _clean_num(v):
+    return int(v) if v is not None and float(v) == int(v) else (round(v, 2) if v is not None else None)
+
+
+def extract_age(text: str, full: str | None = None):
+    """(age_min, age_max) in Jahren aus Kurztext (+ optional Langtext). (None, None) = unbekannt.
+    Reihenfolge: ausdrückliche Zahlen (Kurztext, dann Langtext), danach Zielgruppenwörter (nur Kurztext)."""
+    for src_text in (text, full):
+        if not src_text:
+            continue
+        t = _NUMW_RE.sub(lambda m: str(_NUMW[m.group(1)]), src_text.lower())
+        for pat, kind in _NUM_PATTERNS:
+            for m in re.finditer(pat, t):
+                ctx = t[max(0, m.start() - 20): m.end() + 25]
+                if _PRICE_CTX.search(ctx):
+                    continue
+                g = m.groups()
+                if kind == "range":
+                    a, b = _f(g[0]), _f(g[1])
+                    if a <= b <= 18:
+                        return _clean_num(a), _clean_num(b)
+                elif kind == "min":
+                    n = next(x for x in g if x)
+                    if _f(n) <= 18:
+                        return _clean_num(_f(n)), None
+                elif kind == "mmin":
+                    return _clean_num(round(_f(g[0]) / 12, 2)), None
+                elif kind == "mrange":
+                    return _clean_num(round(_f(g[0]) / 12, 2)), _clean_num(round(_f(g[1]) / 12, 2))
+    lo = hi = None
+    for pat, (a, b) in _GROUPS:
+        if re.search(pat, text.lower()):
+            lo = a if lo is None else min(lo, a)
+            hi = (b if hi is None else (None if b is None else max(hi, b))) if lo is not None else b
+    if lo is not None:
+        return lo, hi
+    return None, None
 
 
 def dedup_hash(ev: dict) -> str:
@@ -63,18 +127,8 @@ def classify_family(ev: dict) -> tuple[float, int | None, int | None, list[str]]
             score -= 0.5
     score = max(0.0, min(1.0, score))
 
-    age_min = age_max = None
-    for pat, kind in AGE_PATTERNS:
-        m = re.search(pat, text)
-        if not m:
-            continue
-        if kind == "range":
-            age_min, age_max = int(m.group(1)), int(m.group(2))
-        elif kind == "min":
-            age_min = int(m.group(1))
-        elif kind == "min_month":
-            age_min = 0
-        break
+    short = " ".join(str(ev.get(k) or "") for k in ("title", "summary", "categories"))
+    age_min, age_max = extract_age(short, ev.get("_fulltext"))
     # kuratiertes Standardalter der Quelle (z. B. FiZ 0–6), nur wenn der Text nichts hergibt
     dflt = ev.get("source_age_default")
     if age_min is None and age_max is None and dflt:

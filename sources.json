@@ -403,7 +403,8 @@
       "url": "https://www.leipzig.de/leben-in-leipzig/kinder-und-familie/freizeitangebote-fuer-kinder-und-jugendliche/veranstaltungen",
       "family_default": 0.5,
       "note": "Offizieller Stadt-Kalender (TYPO3 Calendarize), HTML-Parser",
-      "city": "Leipzig"
+      "city": "Leipzig",
+      "detail_age": true
     },
     {
       "id": "leipzig-im",
@@ -413,7 +414,8 @@
       "url": "https://www.leipzig-im.de/index.php?section=anzeigensort&sort=rubrik&auswahl=Kinder+%26+Familie",
       "family_default": 0.5,
       "note": "Rubrik Kinder & Familie, HTML-Parser",
-      "city": "Leipzig"
+      "city": "Leipzig",
+      "detail_age": true
     },
     {
       "id": "leipzig-im-fuehrung",
@@ -423,7 +425,8 @@
       "url": "https://www.leipzig-im.de/index.php?section=anzeigensort&sort=rubrik&auswahl=F%C3%BChrung",
       "family_default": 0.4,
       "note": "Freigegebene Rubrik Führung, Familienfilter gelockert",
-      "city": "Leipzig"
+      "city": "Leipzig",
+      "detail_age": true
     },
     {
       "id": "leipzig-im-fest-festival",
@@ -433,7 +436,8 @@
       "url": "https://www.leipzig-im.de/index.php?section=anzeigensort&sort=rubrik&auswahl=Fest+%26+Festival",
       "family_default": 0.4,
       "note": "Freigegebene Rubrik Fest & Festival, Familienfilter gelockert",
-      "city": "Leipzig"
+      "city": "Leipzig",
+      "detail_age": true
     },
     {
       "id": "leipzig-im-umland",
@@ -442,7 +446,8 @@
       "active": true,
       "url": "https://www.leipzig-im.de/index.php?section=anzeigensort&sort=rubrik&auswahl=Umland",
       "family_default": 0.4,
-      "note": "Freigegebene Rubrik Umland, Familienfilter gelockert"
+      "note": "Freigegebene Rubrik Umland, Familienfilter gelockert",
+      "detail_age": true
     },
     {
       "id": "rausgegangen",
@@ -601,7 +606,8 @@
       "categories": [
         "kinder-familie-2"
       ],
-      "days": 21
+      "days": 21,
+      "detail_age": true
     },
     {
       "id": "ahoi-leipzig",
@@ -646,7 +652,8 @@
       "region": "chemnitz",
       "city": "Chemnitz",
       "pages": 20,
-      "note": "Stadt Chemnitz, Rubrik „Kinder und Familie“ (Solr-Filter, 20 Seiten); Browser-UA nötig (EventBot → 403)"
+      "note": "Stadt Chemnitz, Rubrik „Kinder und Familie“ (Solr-Filter, 20 Seiten); Browser-UA nötig (EventBot → 403)",
+      "detail_age": true
     },
     {
       "id": "theater-chemnitz",
