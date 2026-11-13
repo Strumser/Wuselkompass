@@ -184,7 +184,7 @@ Dieser Abschnitt ersetzt ältere Aussagen weiter oben, wo sie widersprechen (z. 
   (nichts gelöscht, Alter wird übernommen). Kontrolle: `data/export/dubletten.csv`.
 - Messung: Altersabdeckung 12 % → 20 % (500 von 2489 sichtbaren Terminen); 251 Dubletten markiert.
 - Offen: czr-chemnitz, chemnitz-de, kreuzer-theater, leipzig-im-fuehrung haben 0 % Alter (Detail-Parser/`detail_age` prüfen);
-  dubletten.csv stichprobenartig auf Falschtreffer prüfen; Merge in main wartet auf Freigabe.
+  dubletten.csv stichprobenartig auf Falschtreffer prüfen; Merge in main erledigt (13.11.2026), Branch gelöscht.
 
 ## Bewertung durch Claude (13.11.2026) – steuert die Ansicht „Familie"
 - `data/bewertungen.json` (im Repo, Quelle der Wahrheit): je normalisiertem Titel `urteil` (passt | vielleicht | nein),
@@ -193,7 +193,9 @@ Dieser Abschnitt ersetzt ältere Aussagen weiter oben, wo sie widersprechen (z. 
   Familienquellen. „nein" nur unter „Alle Events". Altersfilter nutzt das geschätzte Alter, wenn der Termin keins nennt
   (Karte: „≈ ab 3", Tooltip „von Claude geschätzt").
 - Ablauf in einer Sitzung: `python3 -m tools.bewerten offen 14` → Claude liest `data/export/zu_bewerten.json`, schreibt
-  Urteile als JSON → `python3 -m tools.bewerten import DATEI`. Weg 2 (automatisch per Claude-API beim Crawl) noch nicht gebaut.
+  Urteile als JSON → `python3 -m tools.bewerten import DATEI`. Weg 2 (automatisch per Claude-API) bewusst NICHT gebaut (Entscheidung 13.11.: API wäre extra zu bezahlen, Abo deckt sie nicht).
+- Entdecken-Seite zeigt Vermerk „KI-Bewertung nötig: N Termine …“, solange Titel der nächsten 14 Tage unbewertet sind
+  (`serve.rating_note`). Nutzer sagt dann in einer Sitzung „Bewerte die neuen Termine“.
 - Erster Durchgang: 904 Titel der nächsten 14 Tage (55 passt, 118 vielleicht, 731 nein). Familie pro Tag ~25–50 statt ~200–300.
 - Kriterium: passt = für 2–4-Jährige gemacht (Puppentheater 3+, Bilderbuchkino, Krabbel-/Spielgruppen, Laternenumzug);
   vielleicht = Kleinkind kann gut mit (Märkte, Weihnachtsmärkte, Panorama) oder Grenzfall (ab 4/5, Babyangebote 0–2);

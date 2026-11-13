@@ -155,6 +155,24 @@ def query_events(p) -> list[dict]:
         return [dict(r) for r in c.execute(sql, args).fetchall()]
 
 
+def rating_note() -> str:
+    """Vermerk: Die Ansicht „Familie" beruht auf einer KI-Bewertung (Claude), die in einer
+    Claude-Sitzung angestoßen werden muss. Zeigt, wie viele Titel der nächsten 14 Tage noch offen sind."""
+    until = (date.today() + timedelta(days=14)).isoformat()
+    with connect() as c:
+        n = c.execute(
+            "SELECT COUNT(DISTINCT events.rkey) FROM events LEFT JOIN ratings USING (rkey) "
+            "WHERE archived_at IS NULL AND dup_of IS NULL AND start_at<>'' "
+            "AND substr(start_at,1,10) <= ? AND verdict IS NULL", (until,)).fetchone()[0]
+        last = c.execute("SELECT MAX(rated_at) FROM ratings").fetchone()[0]
+    stand = f" Letzte Bewertung: {datetime.fromisoformat(last).strftime('%d.%m.%Y')}." if last else ""
+    if not n:
+        return (f'<div class="ai-note">Die Auswahl „Familie" beruht auf einer Bewertung durch KI (Claude).{stand}</div>')
+    return (f'<div class="ai-note ai-open"><b>KI-Bewertung nötig:</b> {n} Termine der nächsten 14 Tage sind noch nicht '
+            f'bewertet, die Ansicht „Familie" ist deshalb unvollständig.{stand} Bewertung in einer Claude-Sitzung '
+            f'anstoßen: „Bewerte die neuen Termine".</div>')
+
+
 def recurring_on(day: date, region: str, age, only) -> list[dict]:
     """Wiederkehrende Angebote, die an diesem Tag stattfinden (Regel je Eintrag)."""
     with connect() as c:
@@ -385,6 +403,7 @@ def render(p) -> str:
   <select class="sr-input" name="stadtteil" onchange="this.form.submit()">{options(distinct_stadtteile(cur_ort), q(p, "stadtteil").strip(), "alle Stadtteile")}</select>
 </form>
 {rec_html}
+{rating_note()}
 <div class="sr-count">{len(evs)} Veranstaltungen an diesem Tag</div>
 <div class="sr-list">
 {"".join(cards) or "<div style='padding:2.5rem 1rem;text-align:center;color:#B0A398;font-size:14px;'>Keine Termine an diesem Tag – wähle ein anderes Datum.</div>"}
@@ -672,6 +691,8 @@ EXTRA_CSS = """
 .pill-off{background:#F0E9DF;color:#A99C8E}
 .pill-est{background:#FFF4D6;color:#9A7417}
 .v-passt{background:#2F7D3A;color:#fff}.v-vielleicht{background:#F3D9A4;color:#7A5410}.v-nein{background:#EADAD4;color:#8E5A4A}
+.ai-note{font-size:12.5px;color:#9A8B7D;margin:.6rem 0 .2rem}
+.ai-open{background:#FFF4D6;color:#7A5410;border:1px solid #F0DCA6;border-radius:10px;padding:8px 12px}
 .v-reason{font-size:12.5px;color:#9A8B7D;margin-top:3px;font-style:italic}
 .tag{display:inline-block;font-size:11.5px;font-weight:800;padding:1px 8px;border-radius:999px;border:1px solid;margin-left:4px;vertical-align:1px}
 .tag-ok{color:#2F7D3A;border-color:#2F9E44}.tag-mid{color:#9A6B12;border-color:#D9A441}.tag-low{color:#B0413F;border-color:#C2555C}
